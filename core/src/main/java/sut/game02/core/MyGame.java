@@ -12,16 +12,17 @@ import tripleplay.game.ScreenStack;
 
 public class MyGame extends Game.Default {
   private final ScreenStack ss = new ScreenStack();
-  public static final int UPDATE_RATE = 25;
+  public static final int UPDATE_RATE = 33;
   protected final Clock.Source clock = new Clock.Source(UPDATE_RATE);
   public MyGame() {
-    super(33); // call update every 33ms (30 times per second)
+    super(UPDATE_RATE); // call update every 33ms (30 times per second)
   }
 
   @Override
   public void init() {
 
       ss.push(new Home(ss));
+
   }
 
   @Override

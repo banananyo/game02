@@ -13,13 +13,15 @@ import tripleplay.ui.*;
 import tripleplay.ui.layout.*;
 import react.UnitSlot;
 
+import java.util.Set;
+
 public class Home extends UIScreen {
   public static final Font TITLE_FONT = graphics().createFont("Helvetica", Font.Style.PLAIN, 24);
 
   private final ScreenStack ss;
   private Root root;
   private final Button start = new Button("Play");
-  private final Button setting = new Button("setting");
+  private final Button setting = new Button("About");
 
   public Home(final ScreenStack ss){
       this.ss = ss;
@@ -30,7 +32,8 @@ public class Home extends UIScreen {
       //----------------------------------------------------------------------
       root.add(start.onClick(new UnitSlot() {
         public void onEmit() {
-          ss.push(new GameScreen(ss));
+            //Status.gameControl = "play";
+          ss.push(new ChooseScreen(ss));
         }
       }));
       root.add(setting.onClick(new UnitSlot() {

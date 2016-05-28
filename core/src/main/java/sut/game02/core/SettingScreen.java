@@ -20,7 +20,7 @@ public class SettingScreen extends Screen {
   private final ScreenStack ss;
   private final Image bbImage;
   private final ImageLayer bb;
-    private  PageControl control;
+    //private  PageControl control;
   public SettingScreen(final ScreenStack ss){
       this.ss = ss;
 
@@ -38,7 +38,7 @@ public class SettingScreen extends Screen {
   }
   public void wasShown (){
     super.wasShown();
-    control = new PageControl(ss);
+    //control = new PageControl();
   }
 
 }
