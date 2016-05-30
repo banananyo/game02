@@ -25,12 +25,20 @@ public class PageControl extends Screen {
                         player.action(2);
                     } else if (event.key() == Key.LEFT) {
                         player.action(3);
-                    } else if (event.key() == Key.X) {
+                    } else if (event.key() == Key.S) {
                         player.action(6);
                     } else if (event.key() == Key.E) {
                         player.action(7);
                     } else if (event.key() == Key.R) {
                         player.action(8);
+                    } else if (event.key() == Key.SPACE) {
+                        player.action(9);
+                    } else if (event.key() == Key.X) {
+                        player.action(10);
+                    } else if (event.key() == Key.C) {
+                        player.action(11);
+                    } else if (event.key() == Key.D) {
+                        player.action(12);
                     }
 
                     if (event.key() == Key.ESCAPE && Status.isPaused == false) {
@@ -53,6 +61,10 @@ public class PageControl extends Screen {
                         player.action(4);
                     } else if (event.key() == Key.LEFT) {
                         player.action(5);
+                    } else if(event.key() == Key.SPACE){
+                        player.action(13);
+                    } else if(event.key() == Key.D){
+                        player.action(12);
                     }
                 }
             });

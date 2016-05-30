@@ -42,14 +42,19 @@ public class Enemy extends Screen {
         //bodyDef.type = BodyType.KINEMATIC;
         bodyDef.position = new Vec2(0,0);
         body = world.createBody(bodyDef);
-
+        Vec2[] vertices = {
+                new Vec2(  0, - 2),
+                new Vec2(+ 1, + 1),
+                new Vec2(- 1, + 1)
+        };
         shape = new PolygonShape();
-        //shape.setAsBox(1,1.5f);
-        shape.setAsBox(1,1.8f);
+
+        shape.set(vertices,vertices.length);
+        //shape.setAsBox(1,1.8f);
 
         fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
-        fixtureDef.density = 2f;
+        fixtureDef.density = 2;
         fixtureDef.friction = 1;
         fixtureDef.restitution = 0.5f;
 
@@ -63,7 +68,8 @@ public class Enemy extends Screen {
         RUN_L, RUN_R,
         DEAD_L, DEAD_R,
         DEADED_L, DEADED_R,
-        HIT_L,HIT_R
+        HIT_L,HIT_R,
+        ATK_L, ATK_R
     }
 
     public Enemy(final World world, final float x, final float y, String name, int hp){
@@ -75,7 +81,7 @@ public class Enemy extends Screen {
             public void onSuccess(Sprite result){
                 sprite.setSprite(spriteIndex);
                 //sprite.layer().setOrigin(sprite.width()/2f, sprite.height()/2f);
-                layer().setOrigin(sprite.width()/2f, sprite.height()/2f);
+                //layer().setOrigin(sprite.width()/2, sprite.height()/2);
                 //sprite.layer().setTranslation(x, y);
                 layer().setTranslation(x, y);
 

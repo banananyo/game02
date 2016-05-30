@@ -16,12 +16,13 @@ import sut.game02.core.sprite.Sprite;
 import sut.game02.core.sprite.SpriteLoader;
 import tripleplay.game.Screen;
 import tripleplay.game.ScreenStack;
+import tripleplay.game.UIScreen;
 import tripleplay.util.Colors;
 
 import java.util.HashMap;
 
 
-public class Player extends  Screen{
+public class Player extends UIScreen {
     private static String key="";
     public static SwordBeam swordBeam;
     public static Body con;
@@ -36,8 +37,14 @@ public class Player extends  Screen{
         bodyDef.position = new Vec2(0,0);
         Body body = world.createBody(bodyDef);
 
+        Vec2[] vertices = {
+                new Vec2(  0, +  3),
+                new Vec2(+ 1, + -1),
+                new Vec2(- 1, + -1)
+        };
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(1,1.5f);
+        shape.set(vertices,vertices.length);
+        //shape.setAsBox(1,1.5f);
         //shape.setRadius(1.4f);
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
@@ -63,7 +70,14 @@ public class Player extends  Screen{
         DEAD_R, DEAD_L, DEADED_L, DEADED_R,
         JUMP_L, JUMP_R,
         JM_L, JM_R,
-        ATK1_L, ATK1_R
+        ATK1_L, ATK1_R,
+        ATK2_L, ATK2_R,
+        ATK3_L, ATK3_R,
+        ATK4_L, ATK4_R,
+        DEF_L, DEF_R,
+        AB_L, AB_R,
+        C_L, C_R
+
     }
     public static State state = State.IDLE_R;
     private static int spriteIndex = 0;
@@ -79,12 +93,18 @@ public class Player extends  Screen{
         6. jump
         7. broke
         8. dead
+        9. def
+        10.atk2
+        11.atk3
+        12.atk4
+        13.LR
+        14.
         */
         switch (key) {
             case 1:
-                if (state == State.IDLE_L || state == State.Run_L || state == State.BR_L) {
+                if (state == State.IDLE_L  || state == State.BR_L) {
                     state = State.ATK1_L;
-                } else if (state == State.IDLE_R || state == State.Run_R || state == State.BR_R) {
+                } else if (state == State.IDLE_R  || state == State.BR_R) {
                     state = State.ATK1_R;
                 }
                 break;
@@ -141,12 +161,26 @@ public class Player extends  Screen{
                 }
                 break;
             case 7:
-                if (state == State.IDLE_R || state == State.Run_R || state == State.BR_R) {
+                if (state == State.IDLE_R ||
+                        state == State.Run_R ||
+                        state == State.BR_R ||
+                        state == State.ATK1_R) {
                     state = State.BRK_R;
-                    body.applyForceToCenter(new Vec2(-1700f, -500f));
-                } else if (state == State.IDLE_L || state == State.Run_L || state == State.BR_L) {
-                    state = State.BRK_L;
-                    body.applyForceToCenter(new Vec2(1700f, -500f));
+                    //body.applyForceToCenter(new Vec2(-500f, -400f));
+                } else if (state == State.IDLE_L ||
+                        state == State.Run_L ||
+                        state == State.BR_L ||
+                        state == State.ATK1_L) {
+                        state = State.BRK_L;
+                    //body.applyForceToCenter(new Vec2(500f, -400f));
+                } else if (state == State.JM_L ||
+                        state == State.JUMP_L) {
+                    state = State.AB_L;
+                    body.applyForceToCenter(new Vec2(600f, -600f));
+                } else if (state == State.JM_R ||
+                        state == State.JUMP_R) {
+                    state = State.AB_R;
+                    body.applyForceToCenter(new Vec2(-600f, -600f));
                 }
                 break;
             case 8:
@@ -154,6 +188,45 @@ public class Player extends  Screen{
                     state = State.DEAD_R;
                 } else if (state == State.IDLE_L || state == State.Run_L) {
                     state = State.DEAD_L;
+                }
+                break;
+            case 9:
+                if (state == State.IDLE_R || state == State.Run_R) {
+                    state = State.DEF_R;
+                } else if (state == State.IDLE_L || state == State.Run_L) {
+                    state = State.DEF_L;
+                }
+                break;
+            case 10:
+                if (state == State.IDLE_L  || state == State.BR_L) {
+                    state = State.ATK2_L;
+                } else if (state == State.IDLE_R  || state == State.BR_R) {
+                    state = State.ATK2_R;
+                }
+                break;
+            case 11:
+                if (state == State.IDLE_L  || state == State.BR_L) {
+                    state = State.ATK3_L;
+                } else if (state == State.IDLE_R  || state == State.BR_R) {
+                    state = State.ATK3_R;
+                }
+                break;
+            case 12:
+                if (state == State.IDLE_L  || state == State.BR_L) {
+                    state = State.ATK4_L;
+                } else if (state == State.IDLE_R  || state == State.BR_R) {
+                    state = State.ATK4_R;
+                } else if (state == State.ATK4_L) {
+                    state = State.C_L;
+                } else if (state == State.ATK4_R) {
+                    state = State.C_R;
+                }
+                break;
+            case 13:
+                if(state == State.DEF_L){
+                    state=State.IDLE_L;
+                }else if(state == State.DEF_R){
+                    state=State.IDLE_R;
                 }
                 break;
         }
@@ -165,7 +238,7 @@ public class Player extends  Screen{
             @Override
             public void onSuccess(Sprite result){
                 sprite.setSprite(spriteIndex);
-                layer().setOrigin(sprite.width()/2f, sprite.height()/2f+50);
+                layer().setOrigin(sprite.width()/2f, sprite.height()/2f+10);
                 layer().setTranslation(x, y);
                 body = initPhysicsBody(world,
                         GameScreen.M_PER_PIXEL*x,
@@ -223,7 +296,7 @@ public class Player extends  Screen{
                     if (!(spriteIndex >= 39 && spriteIndex <= 45)) {
                         spriteIndex = 39;
                     }else if(spriteIndex%2==0){
-                        body.applyLinearImpulse(new Vec2(-250,0),body.getPosition());
+                        body.applyLinearImpulse(new Vec2(-150,0),body.getPosition());
                     }
                     break;
 
@@ -231,12 +304,13 @@ public class Player extends  Screen{
                     if (!(spriteIndex >= 50 && spriteIndex <= 56)) {
                         spriteIndex = 50;
                     }else if(spriteIndex%2==1){
-                        body.applyLinearImpulse(new Vec2(250,0),body.getPosition());
+                        body.applyLinearImpulse(new Vec2(150,0),body.getPosition());
                     }
                     break;
 
                 case BR_L:
-                    body.applyLinearImpulse(new Vec2(80,0),body.getPosition());
+                    body.setLinearVelocity(new Vec2(0,0));
+                    //body.applyLinearImpulse(new Vec2(80,0),body.getPosition());
                     if (!(spriteIndex >= 46 && spriteIndex <= 48)) {
                         spriteIndex = 46;
                     }
@@ -245,7 +319,8 @@ public class Player extends  Screen{
                     break;
 
                 case BR_R:
-                    body.applyLinearImpulse(new Vec2(-80,0),body.getPosition());
+                    body.setLinearVelocity(new Vec2(0,0));
+                    //body.applyLinearImpulse(new Vec2(-80,0),body.getPosition());
                     if (!(spriteIndex >= 57 && spriteIndex <= 59)) {
                         spriteIndex = 57;
                     }
@@ -257,7 +332,9 @@ public class Player extends  Screen{
                     if (!(spriteIndex >= 60 && spriteIndex <= 64)) {
                         spriteIndex = 60;
                     }
-                    if(spriteIndex==64){
+                    if(spriteIndex==62){
+                        //body.applyLinearImpulse(new Vec2(100,0),body.getPosition());
+                    }else if(spriteIndex==64){
 
                         state = State.IDLE_L;
                     }
@@ -267,7 +344,9 @@ public class Player extends  Screen{
                     if (!(spriteIndex >= 65 && spriteIndex <= 69)) {
                         spriteIndex = 65;
                     }
-                    if(spriteIndex==69) {
+                    if(spriteIndex==67){
+                        //body.applyLinearImpulse(new Vec2(-100,0),body.getPosition());
+                    }else if(spriteIndex==69) {
 
                         state = State.IDLE_R;
                     }
@@ -294,10 +373,12 @@ public class Player extends  Screen{
                     break;
 
                 case DEADED_L:
+                    //Status.isDead = true;
                     spriteIndex = 77;
                     break;
 
                 case DEADED_R:
+                    //Status.isDead = true;
                     spriteIndex = 85;
                     break;
 
@@ -307,7 +388,7 @@ public class Player extends  Screen{
                     }
                     if(spriteIndex==89){
                         Status.isLand = false;
-                        body.applyLinearImpulse(new Vec2(0f,-500f),body.getPosition());
+                        body.applyLinearImpulse(new Vec2(0f,-300f),body.getPosition());
                     }else if(spriteIndex > 91 && !Status.isLand){
                         spriteIndex=90;
                     }else if(spriteIndex==95){
@@ -321,7 +402,7 @@ public class Player extends  Screen{
                     }
                     if(spriteIndex==99){
                         Status.isLand = false;
-                        body.applyLinearImpulse(new Vec2(0f,-500f),body.getPosition());
+                        body.applyLinearImpulse(new Vec2(0f,-300f),body.getPosition());
                     }else if(spriteIndex > 101 && !Status.isLand){
                         spriteIndex=100;
                     }else if(spriteIndex==105){
@@ -334,12 +415,12 @@ public class Player extends  Screen{
                         spriteIndex = 106;
                     }
                     if(spriteIndex==111){
-                        Status.playerAttack(body,"L");
+                        Status.playerAttack(body,"L",5);
+                        //GameScreen.sword.play();
                         //con.applyLinearImpulse(new Vec2(-100f,-10f),body.getPosition());
                         //con.applyLinearImpulse(new Vec2(-100f,-10f),con.getPosition());
                         Status.isContact = false;
-                    }
-                    if(spriteIndex == 115){
+                    }else if(spriteIndex == 115){
                         state = State.IDLE_L;
                     }
                     break;
@@ -350,13 +431,142 @@ public class Player extends  Screen{
                     }
 
                     if(spriteIndex==121){
-                        Status.playerAttack(body,"R");
+                        Status.playerAttack(body,"R",5);
+                        //GameScreen.sword.play();
                         //con.applyLinearImpulse(new Vec2(100f,-10f),body.getPosition());
                         //con.applyLinearImpulse(new Vec2(100f,-10f),con.getPosition());
                         Status.isContact = false;
+                    }else if(spriteIndex == 125){
+                        state = State.IDLE_R;
+                    }
+                    break;
+
+                case ATK2_L:
+                    if (!(spriteIndex >= 126 && spriteIndex <= 136)) {
+                        spriteIndex = 126;
+                    }
+                    if(spriteIndex==127){
+                        body.applyLinearImpulse(new Vec2(-300,0),body.getPosition());
+                    }else if(spriteIndex==132){
+                        body.setLinearVelocity(new Vec2(0,0));
+                        Status.playerAttack(body,"L",5);
+                        //GameScreen.sword.play();
+                        Status.isContact = false;
+                    }
+                    if(spriteIndex == 136){
+                        state = State.IDLE_L;
+                    }
+                    break;
+                case ATK2_R:
+                    if (!(spriteIndex >= 137 && spriteIndex <= 147)) {
+                        spriteIndex = 137;
+                    }
+                    if(spriteIndex==138){
+                        body.applyLinearImpulse(new Vec2(300,0),body.getPosition());
+                    }else if(spriteIndex==143){
+                        body.setLinearVelocity(new Vec2(0,0));
+                        Status.playerAttack(body,"R",5);
+                        //GameScreen.sword.play();
+                        Status.isContact = false;
                     }
 
-                    if(spriteIndex == 125){
+                    if(spriteIndex == 147){
+                        state = State.IDLE_R;
+                    }
+                    break;
+
+                case ATK3_L:
+                    if (!(spriteIndex >= 148 && spriteIndex <= 160)) {
+                        spriteIndex = 148;
+                    }
+                    if(spriteIndex==150){
+                        body.applyLinearImpulse(new Vec2(-350,0),body.getPosition());
+                    }else if(spriteIndex==156){
+                        Status.playerAttack(body,"L",5);
+                        //GameScreen.sword.play();
+                        Status.isContact = false;
+                    }
+                    if(spriteIndex == 160){
+                        body.setLinearVelocity(new Vec2(0,0));
+                        state = State.IDLE_L;
+                    }
+                    break;
+                case ATK3_R:
+                    if (!(spriteIndex >= 161 && spriteIndex <= 173)) {
+                        spriteIndex = 161;
+                    }
+
+                    if(spriteIndex==163){
+                        body.applyLinearImpulse(new Vec2(350,0),body.getPosition());
+                    }else if(spriteIndex==169){
+                        Status.playerAttack(body,"R",5);
+                        //GameScreen.sword.play();
+                        Status.isContact = false;
+                    }
+
+                    if(spriteIndex == 173){
+                        body.setLinearVelocity(new Vec2(0,0));
+                        state = State.IDLE_R;
+                    }
+                    break;
+
+                case ATK4_L:
+                    if (!(spriteIndex >= 174 && spriteIndex <= 181)) {
+                        spriteIndex = 174;
+                    }
+                    if(spriteIndex==180){
+                        spriteIndex=177;
+                    }
+                    /*if(spriteIndex==179){
+                        Status.playerAttack(body,"C",5.5f);
+                        GameScreen.sword.play();
+                        Status.isContact = false;
+                    }
+                    if(spriteIndex == 181){
+                        state = State.IDLE_L;
+                    }*/
+                    break;
+                case ATK4_R:
+                    if (!(spriteIndex >= 182 && spriteIndex <= 189)) {
+                        spriteIndex = 182;
+                    }
+                    if(spriteIndex==188){
+                        spriteIndex=185;
+                    }
+                    /*if(spriteIndex==187){
+                        Status.playerAttack(body,"C",5.5f);
+                        GameScreen.sword.play();
+                        Status.isContact = false;
+                    }
+
+                    if(spriteIndex == 189){
+                        state = State.IDLE_R;
+                    }*/
+                    break;
+                case C_L:
+                    if (!(spriteIndex >= 177 && spriteIndex <= 181)) {
+                        spriteIndex = 177;
+                    }
+                    if(spriteIndex==179){
+                        //Status.playerAttack(body,"C",5.5f);
+                        //GameScreen.sword.play();
+                        Status.isContact = false;
+                    }
+                    if(spriteIndex == 181){
+                        state = State.IDLE_L;
+                    }
+                    break;
+                case C_R:
+                    if (!(spriteIndex >= 185 && spriteIndex <= 189)) {
+                        spriteIndex = 185;
+                    }
+
+                    if(spriteIndex==187){
+                        //Status.playerAttack(body,"C",5.5f);
+                        //GameScreen.sword.play();
+                        Status.isContact = false;
+                    }
+                    if(spriteIndex == 189){
                         state = State.IDLE_R;
                     }
                     break;
@@ -367,7 +577,7 @@ public class Player extends  Screen{
                     }
                     if(spriteIndex==89){
                         Status.isLand = false;
-                        body.applyLinearImpulse(new Vec2(-120f,-550f),body.getPosition());
+                        body.applyLinearImpulse(new Vec2(-80,-300),body.getPosition());
                     }
                     else if(spriteIndex > 91 && ! Status.isLand){
                         spriteIndex=90;
@@ -382,13 +592,56 @@ public class Player extends  Screen{
                     }
                     if(spriteIndex==99){
                         Status.isLand = false;
-                        body.applyLinearImpulse(new Vec2(120f,-550f),body.getPosition());
+                        body.applyLinearImpulse(new Vec2(80,-300),body.getPosition());
                     }
                     else if(spriteIndex > 101 && ! Status.isLand){
                         spriteIndex=100;
                     }else if(spriteIndex==105){
                         state = State.IDLE_R;
                     }
+                    break;
+                case AB_L:
+                    if(!(spriteIndex >= 200 && spriteIndex <= 214)){
+                        body.applyLinearImpulse(new Vec2(100f,0),body.getPosition());
+                        spriteIndex=200;
+                    }
+
+                    if(spriteIndex >= 207 && spriteIndex<214){
+                        body.setLinearVelocity(new Vec2(0,0));
+                        body.applyLinearImpulse(new Vec2(0,250f),body.getPosition());
+                    }else if(spriteIndex == 214){
+                        state = State.IDLE_L;
+                    }
+                    break;
+                case AB_R:
+                    if(!(spriteIndex >= 215 && spriteIndex <= 229)){
+                        body.applyLinearImpulse(new Vec2(-100f,0),body.getPosition());
+                        spriteIndex=215;
+                    }
+                    if(spriteIndex >= 222 && spriteIndex<229){
+                        body.setLinearVelocity(new Vec2(0,0));
+                        body.applyLinearImpulse(new Vec2(0,250f),body.getPosition());
+                    }else if(spriteIndex == 229){
+                        state = State.IDLE_R;
+                    }
+                    break;
+                case DEF_L:
+                    if(!(spriteIndex >= 190 && spriteIndex <= 194)){
+                        spriteIndex=190;
+                    }
+                    if(spriteIndex==194){
+                        spriteIndex--;
+                    }
+                    break;
+                case DEF_R:
+                    if(!(spriteIndex >= 195 && spriteIndex <= 199)){
+                        spriteIndex=195;
+                    }
+                    if(spriteIndex==199){
+                        spriteIndex--;
+                    }
+                    break;
+                default:
                     break;
             }
 

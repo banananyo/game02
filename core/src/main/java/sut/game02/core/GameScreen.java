@@ -40,13 +40,16 @@ import java.util.concurrent.ExecutionException;
 
 
 public class GameScreen extends Screen {
-    public static Clock.Source c = new Clock.Source(0);
+    public static Sound sword;
+    public static Sound music;
+    public static boolean hasLoaded;
+    public Clock.Source c = new Clock.Source(0);
     public static Body wallLeft;
     public static Body wallRight;
     public static Body ceil;
     public static Body ground;
     //public static Body slideGround;
-    private ScreenStack ss/* = new ScreenStack()*/;
+    public static ScreenStack ss/* = new ScreenStack()*/;
     //private final ScreenStack ss;
     private final Image bbImage;
     private final ImageLayer bb;
@@ -67,25 +70,31 @@ public class GameScreen extends Screen {
     public static float height=400*M_PER_PIXEL;
     public static float widthPX=800;
     public static float heightPX=400;
-    public static  World world;
+
+    public static World world;
 
     private Body a;
     private Body b;
 
     private PageControl control;
-    //private Enemy A;
+
 
     private static Player player;
     private static float pos_x;
 
-    public static String stage = "01";
+    public static int stage;
 
     private DebugDrawBox2D debugDraw;
 
     public static Status status;
+    public float alpha = 1;
 
-  public GameScreen(final ScreenStack ss,String stage){
-      this.ss = ss;
+  public GameScreen(final ScreenStack ss, final int stage){
+      sword = assets().getSound("sounds/skill");
+     /* music = assets().getSound("sounds/newthang");
+      music.setLooping(true);
+      music.setVolume(1);*/
+      this.ss = ChooseScreen.ss;
       this.stage = stage;
       hpLoadImage = assets().getImage("images/hp/hp2.png");
       hpLoad = graphics().createImageLayer(hpLoadImage);
@@ -102,7 +111,15 @@ public class GameScreen extends Screen {
           @Override
           public void onMouseUp(Mouse.ButtonEvent event) {
               //status.pause();
-              ss.remove(ss.top()); //pop
+              Status.isMsg = false;
+              for(int i=0 ; i<20 ; i++){
+                  //ss.remove(ss.top());
+                  Status.hp = 100;
+                  if(ss.size() >1){
+                      MyGame.ss.remove(MyGame.ss.top());
+                  }
+              }
+              //pop
               //layer.removeAll();
               /*for(Enemy e: status.eList){
                   try {
@@ -130,7 +147,7 @@ public class GameScreen extends Screen {
       this.layer.add(hpLoad);
       this.layer.add(hpBar);
       //----------------------------------------------------------------------
-      final Vec2 gravity = new Vec2(0.0f, 10.0f);
+      final Vec2 gravity = new Vec2(0, 10);
       world=new World(gravity);
       world.setWarmStarting(true);
       world.setAutoClearForces(true);
@@ -173,35 +190,66 @@ public class GameScreen extends Screen {
       wallRight.createFixture(wallRShape, 0.0f);
       //----------------------------------------------------------------------
       player = new Player(world,40f,350f);
-      if(stage == "01"){
-          status.createEnemy(world,400f,300f,"e1",2);
-          status.createEnemy(world,600f,300f,"e1",2);
-      }else if(stage == "02"){
-          status.createEnemy(world,500f,300f,"e2",5);
-          status.createEnemy(world,700f,300f,"e2",5);
-      }
       control = new PageControl(player);
+      status = new Status(ss,layer,player);
       //A = new Enemy(world,0,0,"A",1);
+
+      if(stage == 1){
+          System.out.println("if stage=1");
+          Status.createEnemy(world,400f,300f,"e1",1);
+          Status.createEnemy(world,600f,300f,"e2",1);
+      }else if(stage == 2){
+          System.out.println("else if stage=2");
+          Status.createEnemy(world,500f,300f,"e1",3);
+          Status.createEnemy(world,700f,300f,"e2",5);
+      }else if(stage == 3){
+          System.out.println("else if stage=2");
+          Status.createEnemy(world,500f,300f,"e2",8);
+          Status.createEnemy(world,700f,300f,"e2",8);
+      }else if(stage == 4){
+          System.out.println("else if stage=2");
+          Status.createEnemy(world,500f,300f,"e1",9);
+          Status.createEnemy(world,700f,300f,"e1",9);
+      }else if(stage == 5){
+          System.out.println("else if stage=2");
+          Status.createEnemy(world,500f,300f,"e2",10);
+          Status.createEnemy(world,700f,300f,"e2",7);
+          Status.createEnemy(world,600f,300f,"e2",7);
+      }else if(stage == 6){
+          System.out.println("else if stage=2");
+          Status.createEnemy(world,500f,300f,"e1",3);
+          Status.createEnemy(world,700f,300f,"e2",5);
+      }else if(stage == 7){
+          System.out.println("else if stage=2");
+          Status.createEnemy(world,500f,300f,"e1",3);
+          Status.createEnemy(world,700f,300f,"e2",5);
+      }
       //----------------------------------------------------------------------
   }
 
     @Override
   public void wasShown (){
     super.wasShown();
+        //music.play();
+        hasLoaded = false;
         //----------------------------------------------------------------------
         //sho.layer().setScale(0.6f);
-        status = new Status(layer,player);
         layer.add(player.layer());
         try{
-            for(Enemy e : status.eList)
+            //Status.hp =100;
+            Status.isDead = false;
+            Player.state = Player.State.IDLE_R;
+            for(Enemy e : Status.eList)
                 layer.add(e.layer());
+            hasLoaded = true;
         }catch (Exception ex){
 
         }
+        //status = new Status(layer,player);
         //----------------------------------------------------------------------
 
 
-      if(status.showDebugDraw){
+      if(Status.showDebugDraw){
           CanvasImage canvasImage = graphics().createImage(
                   (int) (width/GameScreen.M_PER_PIXEL),
                   (int) (height/GameScreen.M_PER_PIXEL));
@@ -218,47 +266,65 @@ public class GameScreen extends Screen {
           debugDraw.setCamera(0,0,1f/GameScreen.M_PER_PIXEL);
           world.setDebugDraw(debugDraw);
       }
+
       //----------------------------------------------------------------------
   }
     @Override
     public void update(int delta) {
-        if(status.gameControl == "play"){
+        if(Status.gameControl == "play"){
             try{
                 super.update(delta);
                 world.step(0.1f, 10, 10);
                 this.player.update(delta);
-                for (Enemy e: status.eList) {
+                for (Enemy e: Status.eList) {
                     e.update(delta);
                 }
                 //A.update(delta);
             }catch (Exception ex){}
 
-            if(status.hp <= 0){
-                status.gameOver();
-            }else if(status.hp>100){
-                status.hp = 100;
+            if(Status.hp <= 0){
+                Status.gameOver();
+            }else if(Status.hp>100){
+                Status.hp = 100;
             }
 
-            if(Status.eList.isEmpty()){
-                this.ss.remove(ss.top());
+            if(Status.eList.isEmpty() && !Status.isMsg &&stage!=7){
+                System.out.println("show go");
+                //this.ss.remove(ss.top());
+                Status.isMsg = true;
+                Status.msg= Status.genMsgLayer("go");
+                alpha = ToolsG.fadeIn(alpha);
+                Status.msg.setAlpha(alpha);
+            }else if(Status.isMsg && Status.msg != null){
+                //System.out.println("alpha=1 fadeout");
+                alpha = ToolsG.fadeIO(alpha);
+                Status.msg.setAlpha(alpha);
+            }else if(Status.eList.isEmpty() && !Status.isMsg &&stage==7){
+                System.out.println("Win");
+                //this.ss.remove(ss.top());
+                Status.isMsg = true;
+                Status.msg= Status.genMsgLayer("win");
+                alpha = ToolsG.fadeIn(alpha);
+                Status.msg.setAlpha(alpha);
             }
-        }else if(status.gameControl == "pause"){
+
+        }else if(Status.gameControl == "pause"){
 
         }
     }
     @Override
     public void paint(Clock clock){
-        if(status.gameControl == "play"){
+        if(Status.gameControl == "play"){
             super.paint(clock);
             this.player.paint(clock);
-            for (Enemy e: status.eList) {
+            for (Enemy e: Status.eList) {
                 e.paint(clock);
             }
             //A.paint(clock);
-            if(status.showDebugDraw) {
+            if(Status.showDebugDraw) {
                 debugDraw.getCanvas().clear();
                 world.drawDebugData();
-                debugDraw.getCanvas().drawText(status.debugString,50,200);
+                debugDraw.getCanvas().drawText(Status.hpString,50,200);
                 //debugDraw.getCanvas().setFillColor(Color.rgb(255,255,255));
                 //debugDraw.getCanvas().setStrokeColor(Color.rgb(255,255,255));
             }
@@ -269,11 +335,11 @@ public class GameScreen extends Screen {
 
             }
             //this.hpLoad.setTranslation((hp)-25,15);
-            hpLoad.setWidth(status.hp*2.5f);
-        }else if(status.gameControl == "pause"){
+            hpLoad.setWidth(Status.hp*2.5f);
+        }else if(Status.gameControl == "pause"){
             super.paint(c);
             this.player.paint(c);
-            for (Enemy e: status.eList) {
+            for (Enemy e: Status.eList) {
                 e.paint(c);
             }
         }

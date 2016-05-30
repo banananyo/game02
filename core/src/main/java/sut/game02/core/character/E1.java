@@ -23,12 +23,35 @@ import static playn.core.PlayN.graphics;
 
 
 public class E1 extends Enemy{
-    /*public E1(final World world, final float x, final float y, String name,int hp){
-        super(world,x,y,name,hp);
+    @Override
+    public Body initPhysicsBody(World world, float x, float y){
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyType.DYNAMIC;
+        //bodyDef.type = BodyType.KINEMATIC;
+        bodyDef.position = new Vec2(0,0);
+        body = world.createBody(bodyDef);
+        Vec2[] vertices = {
+                new Vec2(  0, - 2),
+                new Vec2(+ 1, + 1),
+                new Vec2(- 1, + 1)
+        };
+        shape = new PolygonShape();
+
+        shape.set(vertices,vertices.length);
+        //shape.setAsBox(1,1.8f);
+
+        fixtureDef = new FixtureDef();
+        fixtureDef.shape = shape;
+        fixtureDef.density = 2;
+        fixtureDef.friction = 0.5f;
+        //fixtureDef.restitution = 0.5f;
+
+        f = body.createFixture(fixtureDef);
+        body.setTransform(new Vec2(x,y),0f);
+        body.setFixedRotation(true);
+        layer().setOrigin(sprite.width()/2, sprite.height()/2+24);
+        return body;
     }
-    public Body getBody(){
-        return super.getBody();
-    }*/
 
     @Override
     public void genIndex(){
@@ -39,6 +62,22 @@ public class E1 extends Enemy{
             }
             cd += 1;
             switch (state) {
+                case ATK_L:
+                    if (!(spriteIndex >= 12 && spriteIndex <= 17)) {
+                        spriteIndex = 12;
+                    }else if(spriteIndex==17){
+                        Status.playerHit(11);
+                        state = State.IDLE_L;
+                    }
+                    break;
+                case ATK_R:
+                    if (!(spriteIndex >= 18 && spriteIndex <= 23)) {
+                        spriteIndex = 18;
+                    }else if(spriteIndex==23){
+                        Status.playerHit(11);
+                        state = State.IDLE_R;
+                    }
+                    break;
                 case IDLE_L:
                     if (!(spriteIndex >= 0 && spriteIndex <= 5)) {
                         spriteIndex = 0;
@@ -50,29 +89,33 @@ public class E1 extends Enemy{
                     }
                     break;
                 case RUN_L:
-                    if (cd > 12 && cd < 15) {
-                        body.applyLinearImpulse(new Vec2(-60f, 0f), body.getPosition());
+                    /*if (cd > 12 && cd < 15) {
+                        body.applyLinearImpulse(new Vec2(-20, -10), body.getPosition());
                     } else if (cd > 30) {
-                        body.applyLinearImpulse(new Vec2(60f, 0f), body.getPosition());
+                        body.applyLinearImpulse(new Vec2(20, 0), body.getPosition());
                         cd = 0;
                     } else {
                         state = State.IDLE_L;
-                    }
+                    }*/
                     if (!(spriteIndex >= 12 && spriteIndex <= 17)) {
                         spriteIndex = 12;
+                    }else if(spriteIndex%2==0){
+                        body.applyForceToCenter(new Vec2(-200, 0));
                     }
                     break;
                 case RUN_R:
-                    if (cd > 12 && cd < 15) {
-                        body.applyLinearImpulse(new Vec2(60f, 0f), body.getPosition());
+                    /*if (cd > 12 && cd < 15) {
+                        body.applyLinearImpulse(new Vec2(20, -10), body.getPosition());
                     } else if (cd > 30) {
-                        body.applyLinearImpulse(new Vec2(-60f, 0f), body.getPosition());
+                        body.applyLinearImpulse(new Vec2(-20, 0), body.getPosition());
                         cd = 0;
                     } else {
                         state = State.IDLE_R;
-                    }
+                    }*/
                     if (!(spriteIndex >= 18 && spriteIndex <= 23)) {
                         spriteIndex = 18;
+                    }else if(spriteIndex%2==0){
+                        body.applyForceToCenter(new Vec2(200, 0));
                     }
                     break;
                 case DEAD_L:
@@ -128,10 +171,28 @@ public class E1 extends Enemy{
                 spriteIndex++;
 
                 try {
-                    if (body.getPosition().x > Player.body.getPosition().x && body.getPosition().x - Player.body.getPosition().x < 10) {
+                    if (body.getPosition().x - Player.body.getPosition().x>=0 &&
+                            body.getPosition().x - Player.body.getPosition().x <= 2 &&
+                            cd > 20) {
+                        state = State.ATK_L;
+                        cd=0;
+                    } else if (Player.body.getPosition().x - body.getPosition().x>=0 &&
+                            Player.body.getPosition().x - body.getPosition().x <= 2 &&
+                            cd > 20) {
+                        state = State.ATK_R;
+                        cd=0;
+                    }
+
+                    if (body.getPosition().x - Player.body.getPosition().x>2 &&
+                            body.getPosition().x - Player.body.getPosition().x <= 8) {
                         state = State.RUN_L;
-                    } else if (body.getPosition().x < Player.body.getPosition().x && Player.body.getPosition().x - body.getPosition().x < 10) {
+                    } else if (Player.body.getPosition().x - body.getPosition().x>2 &&
+                            Player.body.getPosition().x - body.getPosition().x <= 8) {
                         state = State.RUN_R;
+                    } else if(body.getPosition().x - Player.body.getPosition().x >8){
+                        state = State.IDLE_L;
+                    } else if(Player.body.getPosition().x - body.getPosition().x >8){
+                        state = State.IDLE_R;
                     }
                 } catch (Exception ex) {
 

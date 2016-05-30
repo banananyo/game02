@@ -11,7 +11,8 @@ import playn.core.ImageLayer;
 import tripleplay.game.ScreenStack;
 
 public class MyGame extends Game.Default {
-  private final ScreenStack ss = new ScreenStack();
+  //private final ScreenStack ss = new ScreenStack();
+  public static ScreenStack ss = new ScreenStack();
   public static final int UPDATE_RATE = 33;
   protected final Clock.Source clock = new Clock.Source(UPDATE_RATE);
   public MyGame() {

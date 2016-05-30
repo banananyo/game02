@@ -13,6 +13,7 @@ package sut.game02.core;
  */
 public class ToolsG extends UIScreen {
     public Integer time=0;
+    public static boolean isDown = true;
 
     public Layer genText(String text, int fontSize, Integer fontColor, float x, float y) {
         Font font = graphics().createFont("Tahoma", Font.Style.PLAIN, fontSize);
@@ -36,19 +37,37 @@ public class ToolsG extends UIScreen {
     }
 
     public static float fadeIn(float alphaTest) {
-        if(alphaTest < 1f)
-            return alphaTest + (float)0.05;
+        if(alphaTest < 1)
+            return alphaTest + 0.05f;
         else
-            return 1f;
+            return 1;
     }
 
     public static float fadeOut(float alphaTest) {
         if(alphaTest > 0)
-            return alphaTest - (float)0.05;
+            return alphaTest - 0.05f;
         else
             return 0;
     }
 
-
+    public static float fadeIO(float alphaTest) {
+        if(alphaTest > 0 && !isDown)
+            return alphaTest - 0.05f;
+        else if(alphaTest <1 && isDown){
+            return alphaTest + 0.05f;
+        }else if(alphaTest == 1){
+            isDown = false;
+            return 1;
+        }else if(alphaTest == 0){
+            isDown = true;
+            return 0;
+        }else{
+            return 0;
+        }
+    }
+    public static int genTime(int time){
+        if(time>0){return time--;}
+        else {return 0;}
+    }
 
 }
