@@ -57,7 +57,7 @@ public class E7 extends Enemy{
         //body.setLinearDamping(0f);
         body.setTransform(new Vec2(x,y),0f);
         body.setFixedRotation(true);
-        layer().setOrigin(sprite.width()/2, sprite.height()/2+10);
+        layer().setOrigin(sprite.width()/2, sprite.height()/2+18);
         return  body;
     }
     public  void action(String action){

@@ -123,8 +123,8 @@
           <file leaf-file-name="E7.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/main/java/sut/game02/core/character/E7.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="2.3018868">
-                  <caret line="398" column="38" selection-start-line="398" selection-start-column="38" selection-end-line="398" selection-end-column="38" />
+                <state vertical-scroll-proportion="0.6886792">
+                  <caret line="59" column="64" selection-start-line="59" selection-start-column="64" selection-end-line="59" selection-end-column="64" />
                   <folding>
                     <element signature="e#18882#18883#0" expanded="true" />
                     <element signature="e#18922#18923#0" expanded="true" />
@@ -201,8 +201,8 @@
         <option value="$PROJECT_DIR$/src/main/java/sut/game02/core/character/Player.java" />
         <option value="$PROJECT_DIR$/src/main/java/sut/game02/core/PageControl.java" />
         <option value="$PROJECT_DIR$/src/main/java/sut/game02/core/GameScreen.java" />
-        <option value="$PROJECT_DIR$/src/main/java/sut/game02/core/character/E7.java" />
         <option value="$PROJECT_DIR$/src/main/java/sut/game02/core/Status.java" />
+        <option value="$PROJECT_DIR$/src/main/java/sut/game02/core/character/E7.java" />
       </list>
     </option>
   </component>
@@ -1189,17 +1189,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/sut/game02/core/character/E7.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="2.3018868">
-          <caret line="398" column="38" selection-start-line="398" selection-start-column="38" selection-end-line="398" selection-end-column="38" />
-          <folding>
-            <element signature="e#18882#18883#0" expanded="true" />
-            <element signature="e#18922#18923#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/sut/game02/core/Status.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.2389937">
@@ -1207,6 +1196,17 @@
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#1635#1649#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/sut/game02/core/character/E7.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6886792">
+          <caret line="59" column="64" selection-start-line="59" selection-start-column="64" selection-end-line="59" selection-end-column="64" />
+          <folding>
+            <element signature="e#18882#18883#0" expanded="true" />
+            <element signature="e#18922#18923#0" expanded="true" />
           </folding>
         </state>
       </provider>
