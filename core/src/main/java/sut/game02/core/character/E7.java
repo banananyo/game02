@@ -122,7 +122,7 @@ public class E7 extends Enemy{
 
     @Override
     public void genIndex(){
-        if(e > 100) {
+        if(e > 120) {
             if (this.hp < 0) {
                 state = State.DEAD_L;
             }
@@ -153,23 +153,27 @@ public class E7 extends Enemy{
                     if (!(spriteIndex >= 38 && spriteIndex <= 44)) {
                         spriteIndex = 38;
                     }
-                    if(spriteIndex==40 || spriteIndex==43){
+                    if(spriteIndex==40){
                         body.applyLinearImpulse(new Vec2(-100,0),body.getPosition());
+                    }else if(spriteIndex==44){
+                        this.state = State.IDLE_L;
                     }
                     break;
                 case RUN_R:
                     if (!(spriteIndex >= 45 && spriteIndex <= 51)) {
                         spriteIndex = 45;
                     }
-                    if(spriteIndex==47 || spriteIndex==50){
+                    if(spriteIndex==47){
                         body.applyLinearImpulse(new Vec2(100,0),body.getPosition());
+                    }else if(spriteIndex==51){
+                        this.state = State.IDLE_R;
                     }
                     break;
                 case ATK1_L:
                     if (!(spriteIndex >= 52 && spriteIndex <= 58)) {
                         spriteIndex = 52;
                     }if(spriteIndex==53){
-                        Status.enemyAttack(this,"R",5,10);
+                        Status.enemyAttack(this,"L",5,10);
                     }else if(spriteIndex==58){
                         state = State.IDLE_L;
                     }
@@ -178,7 +182,9 @@ public class E7 extends Enemy{
                     if (!(spriteIndex >= 59 && spriteIndex <= 65)) {
                         spriteIndex = 59;
                     }
-                    if(spriteIndex==65){
+                    if(spriteIndex==60){
+                        Status.enemyAttack(this,"R",5,10);
+                    }else if(spriteIndex==65){
                         state = State.IDLE_R;
                     }
                     break;
@@ -186,7 +192,9 @@ public class E7 extends Enemy{
                     if (!(spriteIndex >= 66 && spriteIndex <= 73)) {
                         spriteIndex = 66;
                     }
-                    if(spriteIndex==73){
+                    if(spriteIndex==68){
+                        Status.enemyAttack(this,"L",5,10);
+                    }else if(spriteIndex==73){
                         state = State.IDLE_L;
                     }
                     break;
@@ -194,7 +202,9 @@ public class E7 extends Enemy{
                     if (!(spriteIndex >= 74 && spriteIndex <= 81)) {
                         spriteIndex = 74;
                     }
-                    if(spriteIndex==81){
+                    if(spriteIndex==76){
+                        Status.enemyAttack(this,"R",5,10);
+                    }else if(spriteIndex==81){
                         state = State.IDLE_R;
                     }
                     break;
@@ -202,7 +212,9 @@ public class E7 extends Enemy{
                     if (!(spriteIndex >= 82 && spriteIndex <= 90)) {
                         spriteIndex = 82;
                     }
-                    if(spriteIndex==90){
+                    if(spriteIndex==84){
+                        Status.enemyAttack(this,"L",5,10);
+                    }else if(spriteIndex==90){
                         state = State.IDLE_L;
                     }
                     break;
@@ -210,7 +222,9 @@ public class E7 extends Enemy{
                     if (!(spriteIndex >= 91 && spriteIndex <= 99)) {
                         spriteIndex = 91;
                     }
-                    if(spriteIndex==99){
+                    if(spriteIndex==93){
+                        Status.enemyAttack(this,"R",5,10);
+                    }else if(spriteIndex==99){
                         state = State.IDLE_R;
                     }
                     break;
@@ -255,7 +269,7 @@ public class E7 extends Enemy{
                         spriteIndex = 136;
                     }
                     if(spriteIndex>=136){
-                        body.applyLinearImpulse(new Vec2(-150,0),body.getPosition());
+                        body.applyLinearImpulse(new Vec2(-20,0),body.getPosition());
                     }else if(spriteIndex==139){
                         body.setLinearVelocity(new Vec2(0,0));
                         this.state = State.IDLE_L;
@@ -266,7 +280,7 @@ public class E7 extends Enemy{
                         spriteIndex = 140;
                     }
                     if(spriteIndex>=140){
-                        body.applyLinearImpulse(new Vec2(150,0),body.getPosition());
+                        body.applyLinearImpulse(new Vec2(20,0),body.getPosition());
                     }else if(spriteIndex==143){
                         body.setLinearVelocity(new Vec2(0,0));
                         this.state = State.IDLE_R;
@@ -309,45 +323,50 @@ public class E7 extends Enemy{
                     if (rand.nextInt(5) == 3) {
                         //cd =0;
                         if (this.getBody().getPosition().x - Player.body.getPosition().x > 4) {
-                            switch (rand.nextInt(5)) {
+                            switch (rand.nextInt(4)) {
                                 case 0:
                                     action("RUN_L");
                                     //this.state = State.RUN_L;
                                     break;
                                 case 1:
-                                    action("DASH_L");
-                                    //this.state = State.DASH_L;
-                                    break;
-                                case 2:
                                     action("IDLE_L");
                                     //this.state = State.IDLE_L;
                                     break;
-                                default:
-                                    action("IDLE_L");
+                                case 2:
+                                    if(this.body.getPosition().x<24){
+                                        action("RUN_R");
+                                    }
+                                    break;
+                                case 4:
+                                    action("RUN_L");
+                                    //this.state = State.RUN_L;
                                     break;
                             }
 
                         } else if (Player.body.getPosition().x - this.getBody().getPosition().x > 4) {
-                            switch (rand.nextInt(5)) {
+                            switch (rand.nextInt(4)) {
                                 case 0:
                                     action("RUN_R");
                                     //this.state = State.RUN_R;
                                     break;
                                 case 1:
-                                    action("DASH_R");
-                                    //this.state = State.DASH_R;
-                                    break;
-                                case 2:
                                     action("IDLE_R");
                                     //this.state = State.IDLE_R;
                                     break;
-                                default:
-                                    action("IDLE_R");
+                                case 2:
+                                    if(body.getPosition().x>5){
+                                        action("RUN_L");
+                                    }
+                                    break;
+                                case 4:
+                                    action("RUN_R");
+                                    //this.state = State.RUN_R;
                                     break;
                             }
                         } else if (this.getBody().getPosition().x - Player.body.getPosition().x <= 4 &&
-                                this.getBody().getPosition().x - Player.body.getPosition().x > 0) {
-                            switch (rand.nextInt(7)) {
+                                this.getBody().getPosition().x - Player.body.getPosition().x >= 0) {
+                            //state = State.IDLE_L;
+                            switch (rand.nextInt(8)) {
                                 case 0:
                                     action("ATK1_L");
                                     //this.state = State.ATK1_L;
@@ -361,16 +380,31 @@ public class E7 extends Enemy{
                                     //this.state = State.ATK3_L;
                                     break;
                                 case 3:
-                                    action("DASH_R");
-                                    //this.state = State.DASH_R;
+                                    if(body.getPosition().x<24){
+                                        action("RUN_R");
+                                    }
+                                    //this.state = State.ATK3_L;
                                     break;
-                                default:
+                                case 4:
                                     action("IDLE_L");
+                                    break;
+                                case 5:
+                                    action("ATK1_L");
+                                    //this.state = State.ATK1_L;
+                                    break;
+                                case 6:
+                                    action("ATK2_L");
+                                    //this.state = State.ATK2_L;
+                                    break;
+                                case 7:
+                                    action("ATK3_L");
+                                    //this.state = State.ATK3_L;
                                     break;
                             }
                         } else if (Player.body.getPosition().x - this.getBody().getPosition().x <= 4 &&
-                                Player.body.getPosition().x - this.getBody().getPosition().x > 0) {
-                            switch (rand.nextInt(7)) {
+                                Player.body.getPosition().x - this.getBody().getPosition().x >= 0) {
+                            //state = State.IDLE_R;
+                            switch (rand.nextInt(8)) {
                                 case 0:
                                     action("ATK1_R");
                                     //this.state = State.ATK1_R;
@@ -384,11 +418,25 @@ public class E7 extends Enemy{
                                     //this.state = State.ATK3_R;
                                     break;
                                 case 3:
-                                    action("DASH_L");
-                                    //this.state = State.DASH_L;
+                                    if(body.getPosition().x>5){
+                                        action("RUN_L");
+                                    }
+                                    //this.state = State.ATK3_R;
                                     break;
-                                default:
+                                case 4:
                                     action("IDLE_R");
+                                    break;
+                                case 5:
+                                    action("ATK1_R");
+                                    //this.state = State.ATK1_R;
+                                    break;
+                                case 6:
+                                    action("ATK2_R");
+                                    //this.state = State.ATK2_R;
+                                    break;
+                                case 7:
+                                    action("ATK3_R");
+                                    //this.state = State.ATK3_R;
                                     break;
                             }
                         }

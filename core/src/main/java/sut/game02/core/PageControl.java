@@ -46,9 +46,9 @@ public class PageControl extends Screen {
                     } else if (event.key() == Key.ESCAPE && Status.isPaused == true && Status.hp >= 0) {
                         Status.play();
                     } else if (event.key() == Key.Q) {
-                        Status.hp += 5;
+                        Status.hp += 5f;
                     } else if (event.key() == Key.W) {
-                        Status.hp -= 5;
+                        Status.hp -= 5f;
                     }
                 }
 

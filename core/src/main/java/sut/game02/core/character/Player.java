@@ -310,6 +310,7 @@ public class Player extends UIScreen {
 
                 case BR_L:
                     body.setLinearVelocity(new Vec2(0,0));
+                    body.setLinearDamping(0);
                     //body.applyLinearImpulse(new Vec2(80,0),body.getPosition());
                     if (!(spriteIndex >= 46 && spriteIndex <= 48)) {
                         spriteIndex = 46;
@@ -320,6 +321,7 @@ public class Player extends UIScreen {
 
                 case BR_R:
                     body.setLinearVelocity(new Vec2(0,0));
+                    body.setLinearDamping(0);
                     //body.applyLinearImpulse(new Vec2(-80,0),body.getPosition());
                     if (!(spriteIndex >= 57 && spriteIndex <= 59)) {
                         spriteIndex = 57;
@@ -411,6 +413,7 @@ public class Player extends UIScreen {
                     break;
 
                 case ATK1_L:
+                    body.setLinearVelocity(new Vec2(0,0));
                     if (!(spriteIndex >= 106 && spriteIndex <= 115)) {
                         spriteIndex = 106;
                     }
@@ -426,6 +429,7 @@ public class Player extends UIScreen {
                     break;
 
                 case ATK1_R:
+                    body.setLinearVelocity(new Vec2(0,0));
                     if (!(spriteIndex >= 116 && spriteIndex <= 125)) {
                         spriteIndex = 116;
                     }

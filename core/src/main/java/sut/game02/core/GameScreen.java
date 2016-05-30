@@ -113,7 +113,7 @@ public class GameScreen extends Screen {
               Status.isMsg = false;
               for(int i=0 ; i<20 ; i++){
                   //ss.remove(ss.top());
-                  Status.hp = 100;
+                  Status.hp = 100f;
                   if(ss.size() >1){
                       MyGame.ss.remove(MyGame.ss.top());
                   }
@@ -280,10 +280,10 @@ public class GameScreen extends Screen {
                 //A.update(delta);
             }catch (Exception ex){}
 
-            if(Status.hp <= 0){
+            if(Status.hp <= 0f){
                 Status.gameOver();
-            }else if(Status.hp>100){
-                Status.hp = 100;
+            }else if(Status.hp>100f){
+                Status.hp = 100f;
             }
 
             if(Status.eList.isEmpty() && !Status.isMsg &&stage!=7){

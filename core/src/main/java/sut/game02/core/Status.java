@@ -35,8 +35,8 @@ public class Status extends Screen {
     public static boolean isContact = false;
     public static String gameControl = "play";
     public static String hpString ="100/100";
-    public static int hp=100;
-    public static Boolean showDebugDraw = true;
+    public static float hp=100f;
+    public static Boolean showDebugDraw = false;
     public static String gameMsg = "alive";
     public static ImageLayer msg;
 
@@ -125,25 +125,25 @@ public class Status extends Screen {
             if(e.getBody().getPosition().x>playerBody.getPosition().x
                     && e.getBody().getPosition().x-playerBody.getPosition().x<range && LR=="R"){
                 e.getBody().applyLinearImpulse(new Vec2(50,-10),e.getBody().getPosition());
-                e.hp-=1;
+                e.hp-=1f;
                 e.state = Enemy.State.HIT_L;
             }
             else if(e.getBody().getPosition().x<playerBody.getPosition().x
                     && playerBody.getPosition().x-e.getBody().getPosition().x<range && LR=="L"){
                 e.getBody().applyLinearImpulse(new Vec2(-50,-10),e.getBody().getPosition());
-                e.hp-=1;
+                e.hp-=1f;
                 e.state = Enemy.State.HIT_R;
             }
             if(e.getBody().getPosition().x<playerBody.getPosition().x
                     && playerBody.getPosition().x-e.getBody().getPosition().x<range && LR=="C"){
                 e.getBody().applyLinearImpulse(new Vec2(-50,-10),e.getBody().getPosition());
-                e.hp-=1;
+                e.hp-=1f;
                 e.state = Enemy.State.HIT_R;
             }
             else if(e.getBody().getPosition().x>playerBody.getPosition().x
                     && e.getBody().getPosition().x-playerBody.getPosition().x<range && LR=="C"){
                 e.getBody().applyLinearImpulse(new Vec2(50,-10),e.getBody().getPosition());
-                e.hp-=1;
+                e.hp-=1f;
                 e.state = Enemy.State.HIT_L;
             }
         }
@@ -159,27 +159,34 @@ public class Status extends Screen {
             if(e.getBody().getPosition().x-Player.body.getPosition().x<range && LR=="L"){
                 Player.body.applyLinearImpulse(new Vec2(-50,-10),e.getBody().getPosition());
                 playerHit(dmg);
-                Player.state = Player.State.BRK_R;
+                //Player.state = Player.State.BRK_R;
             }
             else if(Player.body.getPosition().x-e.getBody().getPosition().x<range && LR=="R"){
                 Player.body.applyLinearImpulse(new Vec2(50,-10),e.getBody().getPosition());
                 playerHit(dmg);
-                Player.state = Player.State.BRK_L;
+                //Player.state = Player.State.BRK_L;
             }
             if(Player.body.getPosition().x-e.getBody().getPosition().x<range && LR=="C"){
                 Player.body.applyLinearImpulse(new Vec2(50,-10),e.getBody().getPosition());
                 playerHit(dmg);
-                Player.state = Player.State.BRK_L;
+                //Player.state = Player.State.BRK_L;
             }
             else if(e.getBody().getPosition().x-Player.body.getPosition().x<range && LR=="C") {
                 Player.body.applyLinearImpulse(new Vec2(-50, -10), e.getBody().getPosition());
                 playerHit(dmg);
-                Player.state = Player.State.BRK_R;
+                //Player.state = Player.State.BRK_R;
             }
     }
-    public static void playerHit(int dmg){
-        player.action(7);
-        hp -= dmg;
+    public static void playerHit(float dmg){
+        if(Player.state == Player.State.DEF_L){
+            hp -= dmg/2;
+        }else if(Player.state == Player.State.DEF_R){
+            hp -= dmg/2;
+        }else{
+            player.action(7);
+            hp -= dmg/2;
+        }
+
         hpString = Status.hp+"/100";
         screenLayer.remove(hpTextLayer);
         hpTextLayer = toolsG.genText(hpString,14, Colors.WHITE,25,20);
