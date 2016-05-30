@@ -12,10 +12,7 @@ import org.jbox2d.dynamics.*;
 import org.jbox2d.dynamics.contacts.Contact;
 import org.omg.PortableInterceptor.SUCCESSFUL;
 import playn.core.*;
-import sut.game02.core.character.E1;
-import sut.game02.core.character.E2;
-import sut.game02.core.character.Enemy;
-import sut.game02.core.character.Player;
+import sut.game02.core.character.*;
 import tripleplay.game.Screen;
 import tripleplay.game.ScreenStack;
 import tripleplay.util.Colors;
@@ -79,7 +76,7 @@ public class Status extends Screen {
                     //status.isJump=false;
                 }else  if((b == player.getBody() && a != GameScreen.ground && a!=GameScreen.wallRight && a!=GameScreen.wallLeft) ||
                         (a == player.getBody() && b != GameScreen.ground && b!=GameScreen.wallRight && b!=GameScreen.wallLeft)){
-                    if(player.state != Player.State.AB_L &&
+                    /*if(player.state != Player.State.AB_L &&
                             player.state != Player.State.AB_R &&
                             player.state != Player.State.BRK_L&&
                             player.state != Player.State.BRK_R){
@@ -88,7 +85,9 @@ public class Status extends Screen {
                         }else{
                             playerHit(12);
                         }
-                    }
+                    }*/
+                    b.setLinearVelocity(new Vec2(0,0));
+                    a.setLinearVelocity(new Vec2(0,0));
                 }else if((b==player.getBody() && a==GameScreen.wallRight ||
                         a==player.getBody() && b==GameScreen.wallRight) &&
                     eList.isEmpty()){
@@ -156,8 +155,27 @@ public class Status extends Screen {
             body.applyLinearImpulse(new Vec2(-200,0),body.getPosition());
         }*/
     }
-    public  static void enemyAttack(){
-
+    public  static void enemyAttack(Enemy e,String LR,float range,int dmg){
+            if(e.getBody().getPosition().x-Player.body.getPosition().x<range && LR=="L"){
+                Player.body.applyLinearImpulse(new Vec2(-50,-10),e.getBody().getPosition());
+                playerHit(dmg);
+                Player.state = Player.State.BRK_R;
+            }
+            else if(Player.body.getPosition().x-e.getBody().getPosition().x<range && LR=="R"){
+                Player.body.applyLinearImpulse(new Vec2(50,-10),e.getBody().getPosition());
+                playerHit(dmg);
+                Player.state = Player.State.BRK_L;
+            }
+            if(Player.body.getPosition().x-e.getBody().getPosition().x<range && LR=="C"){
+                Player.body.applyLinearImpulse(new Vec2(50,-10),e.getBody().getPosition());
+                playerHit(dmg);
+                Player.state = Player.State.BRK_L;
+            }
+            else if(e.getBody().getPosition().x-Player.body.getPosition().x<range && LR=="C") {
+                Player.body.applyLinearImpulse(new Vec2(-50, -10), e.getBody().getPosition());
+                playerHit(dmg);
+                Player.state = Player.State.BRK_R;
+            }
     }
     public static void playerHit(int dmg){
         player.action(7);
@@ -233,12 +251,37 @@ public class Status extends Screen {
         if(name == "e1"){
             System.out.println("create e1");
             E1  e = new E1(world,x,y,name,hp);
-            enemies.put(e.getBody(),name);
+            //enemies.put(e.getBody(),name);
             eList.add(e);
         }else if(name == "e2"){
             System.out.println("create e2");
             E2 e = new E2(world,x,y,name,hp);
-            enemies.put(e.getBody(),name);
+            //enemies.put(e.getBody(),name);
+            eList.add(e);
+        }else if(name == "e3"){
+            System.out.println("create e3");
+            E3 e = new E3(world,x,y,name,hp);
+            //enemies.put(e.getBody(),name);
+            eList.add(e);
+        }else if(name == "e4"){
+            System.out.println("create e4");
+            E4 e = new E4(world,x,y,name,hp);
+            //enemies.put(e.getBody(),name);
+            eList.add(e);
+        }else if(name == "e5"){
+            System.out.println("create e5");
+            E5 e = new E5(world,x,y,name,hp);
+            //enemies.put(e.getBody(),name);
+            eList.add(e);
+        }else if(name == "e6"){
+            System.out.println("create e6");
+            E6 e = new E6(world,x,y,name,hp);
+            //enemies.put(e.getBody(),name);
+            eList.add(e);
+        }else if(name == "e7"){
+            System.out.println("create e7");
+            E7 e = new E7(world,x,y,name,hp);
+            //enemies.put(e.getBody(),name);
             eList.add(e);
         }
     }

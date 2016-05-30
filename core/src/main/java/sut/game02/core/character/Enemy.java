@@ -69,7 +69,15 @@ public class Enemy extends Screen {
         DEAD_L, DEAD_R,
         DEADED_L, DEADED_R,
         HIT_L,HIT_R,
-        ATK_L, ATK_R
+        ATK_L, ATK_R,
+
+        JMP_L, JMP_R,
+        ATK1_L, ATK1_R,
+        ATK2_L, ATK2_R,
+        ATK3_L, ATK3_R,
+        DEF_L, DEF_R,
+        BR_L, BR_R,
+        DASH_L, DASH_R
     }
 
     public Enemy(final World world, final float x, final float y, String name, int hp){
@@ -110,7 +118,7 @@ public class Enemy extends Screen {
     }
     //@Override
     public void update(int delta) {
-        //super.update(delta);
+        super.update(delta);
         if(hasLoaded == false) return;
         e = e + delta;
         if(isDead){

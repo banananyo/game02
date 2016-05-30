@@ -165,13 +165,13 @@ public class Player extends UIScreen {
                         state == State.Run_R ||
                         state == State.BR_R ||
                         state == State.ATK1_R) {
-                    state = State.BRK_R;
+                    state = State.AB_R;
                     //body.applyForceToCenter(new Vec2(-500f, -400f));
                 } else if (state == State.IDLE_L ||
                         state == State.Run_L ||
                         state == State.BR_L ||
                         state == State.ATK1_L) {
-                        state = State.BRK_L;
+                        state = State.AB_L;
                     //body.applyForceToCenter(new Vec2(500f, -400f));
                 } else if (state == State.JM_L ||
                         state == State.JUMP_L) {
@@ -602,25 +602,25 @@ public class Player extends UIScreen {
                     break;
                 case AB_L:
                     if(!(spriteIndex >= 200 && spriteIndex <= 214)){
-                        body.applyLinearImpulse(new Vec2(100f,0),body.getPosition());
+                        body.applyLinearImpulse(new Vec2(150f,-250),body.getPosition());
                         spriteIndex=200;
                     }
 
                     if(spriteIndex >= 207 && spriteIndex<214){
                         body.setLinearVelocity(new Vec2(0,0));
-                        body.applyLinearImpulse(new Vec2(0,250f),body.getPosition());
+                        body.applyLinearImpulse(new Vec2(0,300f),body.getPosition());
                     }else if(spriteIndex == 214){
                         state = State.IDLE_L;
                     }
                     break;
                 case AB_R:
                     if(!(spriteIndex >= 215 && spriteIndex <= 229)){
-                        body.applyLinearImpulse(new Vec2(-100f,0),body.getPosition());
+                        body.applyLinearImpulse(new Vec2(-150f,-250),body.getPosition());
                         spriteIndex=215;
                     }
                     if(spriteIndex >= 222 && spriteIndex<229){
                         body.setLinearVelocity(new Vec2(0,0));
-                        body.applyLinearImpulse(new Vec2(0,250f),body.getPosition());
+                        body.applyLinearImpulse(new Vec2(0,300f),body.getPosition());
                     }else if(spriteIndex == 229){
                         state = State.IDLE_R;
                     }

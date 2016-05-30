@@ -78,7 +78,6 @@ public class GameScreen extends Screen {
 
     private PageControl control;
 
-
     private static Player player;
     private static float pos_x;
 
@@ -196,33 +195,32 @@ public class GameScreen extends Screen {
 
       if(stage == 1){
           System.out.println("if stage=1");
-          Status.createEnemy(world,400f,300f,"e1",1);
-          Status.createEnemy(world,600f,300f,"e2",1);
+          Status.createEnemy(world,500f,300f,"e1",1);
+          Status.createEnemy(world,700f,300f,"e2",1);
       }else if(stage == 2){
           System.out.println("else if stage=2");
           Status.createEnemy(world,500f,300f,"e1",3);
           Status.createEnemy(world,700f,300f,"e2",5);
       }else if(stage == 3){
-          System.out.println("else if stage=2");
-          Status.createEnemy(world,500f,300f,"e2",8);
-          Status.createEnemy(world,700f,300f,"e2",8);
+          System.out.println("else if stage=3");
+          Status.createEnemy(world,500f,300f,"e3",8);
+          Status.createEnemy(world,700f,300f,"e4",8);
       }else if(stage == 4){
-          System.out.println("else if stage=2");
-          Status.createEnemy(world,500f,300f,"e1",9);
-          Status.createEnemy(world,700f,300f,"e1",9);
+          System.out.println("else if stage=4");
+          Status.createEnemy(world,500f,300f,"e5",9);
+          Status.createEnemy(world,700f,300f,"e6",9);
       }else if(stage == 5){
-          System.out.println("else if stage=2");
-          Status.createEnemy(world,500f,300f,"e2",10);
-          Status.createEnemy(world,700f,300f,"e2",7);
-          Status.createEnemy(world,600f,300f,"e2",7);
+          System.out.println("else if stage=5");
+          Status.createEnemy(world,500f,300f,"e5",10);
+          Status.createEnemy(world,700f,300f,"e6",7);
+          Status.createEnemy(world,600f,300f,"e4",7);
       }else if(stage == 6){
-          System.out.println("else if stage=2");
+          System.out.println("else if stage=6");
           Status.createEnemy(world,500f,300f,"e1",3);
           Status.createEnemy(world,700f,300f,"e2",5);
       }else if(stage == 7){
-          System.out.println("else if stage=2");
-          Status.createEnemy(world,500f,300f,"e1",3);
-          Status.createEnemy(world,700f,300f,"e2",5);
+          System.out.println("else if stage=7");
+          Status.createEnemy(world,700f,300f,"e7",10);
       }
       //----------------------------------------------------------------------
   }
