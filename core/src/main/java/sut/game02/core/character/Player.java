@@ -38,9 +38,10 @@ public class Player extends UIScreen {
         Body body = world.createBody(bodyDef);
 
         Vec2[] vertices = {
-                new Vec2(  0, +  3),
-                new Vec2(+ 1, + -1),
-                new Vec2(- 1, + -1)
+                new Vec2(  0, +  2),
+                new Vec2(+ 1, +  0),
+                new Vec2(  0, +  -2),
+                new Vec2(- 1, +  0)
         };
         PolygonShape shape = new PolygonShape();
         shape.set(vertices,vertices.length);
@@ -238,7 +239,7 @@ public class Player extends UIScreen {
             @Override
             public void onSuccess(Sprite result){
                 sprite.setSprite(spriteIndex);
-                layer().setOrigin(sprite.width()/2f, sprite.height()/2f+10);
+                layer().setOrigin(sprite.width()/2f, sprite.height()/2f+34);
                 layer().setTranslation(x, y);
                 body = initPhysicsBody(world,
                         GameScreen.M_PER_PIXEL*x,
@@ -260,7 +261,7 @@ public class Player extends UIScreen {
         if(hasLoaded == false) return;
         e += delta;
         //body.applyForce(new Vec2(0,2f),body.getPosition());
-        if(e > 50) {
+        if(e > 90) {
             switch (state){
                 case IDLE_L:
                     Status.isLand =true;

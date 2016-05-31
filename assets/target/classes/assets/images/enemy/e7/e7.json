@@ -1,18 +1,18 @@
 {
 	"urls": ["images/enemy/e7/yu_idle_L.png",
-	"images/enemy/e7/yu_idle_R.png",
-	"images/enemy/e7/yu_jump_L.png",
-	"images/enemy/e7/yu_jump_R.png",
-	"images/enemy/e7/yu_run_LR.png",
-	"images/enemy/e7/yu_atk1_2_L.png",
-	"images/enemy/e7/yu_atk1_2_R.png",
-	"images/enemy/e7/yu_atk3_L.png",
-	"images/enemy/e7/yu_atk3_R.png",
-	"images/enemy/e7/yu_br_def_LR.png",
-	"images/enemy/e7/yu_brk1_2_L.png",
-	"images/enemy/e7/yu_brk1_2_R.png",
-	"images/enemy/e7/yu_dash_LR.png",
-	"images/enemy/e7/yu_dead_LR.png"
+	"images/yu/yu_idle_R.png",
+	"images/yu/yu_jump_L.png",
+	"images/yu/yu_jump_R.png",
+	"images/yu/yu_run_LR.png",
+	"images/yu/yu_atk1_2_L.png",
+	"images/yu/yu_atk1_2_R.png",
+	"images/yu/yu_atk3_L.png",
+	"images/yu/yu_atk3_R.png",
+	"images/yu/yu_br_def_LR.png",
+	"images/yu/yu_brk1_2_L.png",
+	"images/yu/yu_brk1_2_R.png",
+	"images/yu/yu_dash_LR.png",
+	"images/yu/yu_dead_LR.png"
 	],
 
 	"sprites":[

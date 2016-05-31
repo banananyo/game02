@@ -27,6 +27,7 @@ import static playn.core.PlayN.graphics;
 
 public class E7 extends Enemy{
     Random rand = new Random();
+    boolean isLand = true;
 
     public Layer layer(){
         return this.sprite.layer();
@@ -57,7 +58,7 @@ public class E7 extends Enemy{
         //body.setLinearDamping(0f);
         body.setTransform(new Vec2(x,y),0f);
         body.setFixedRotation(true);
-        layer().setOrigin(sprite.width()/2, sprite.height()/2+18);
+        layer().setOrigin(sprite.width()/2, sprite.height()/2+14);
         return  body;
     }
     public  void action(String action){
@@ -69,11 +70,11 @@ public class E7 extends Enemy{
             this.state = State.IDLE_R;
         }
 
-        else if(action == "RUN_L"){
+        else if(action == "RUN_L" && isLand){
             this.state = State.RUN_L;
         }
 
-        else if(action == "RUN_R"){
+        else if(action == "RUN_R" && isLand){
             this.state = State.RUN_R;
         }
 
@@ -118,35 +119,75 @@ public class E7 extends Enemy{
             //Status.enemyAttack(this,"R",5,10);
             this.state = State.ATK3_R;
         }
+
+        else if(action == "JMP_L" && state==State.IDLE_L){
+            this.state = State.JMP_L;
+        }
+
+        else if(action == "JMP_R" && state==State.IDLE_R){
+            this.state = State.JMP_R;
+        }
     }
 
     @Override
     public void genIndex(){
-        if(e > 120) {
+        if(e > 90) {
             if (this.hp < 0) {
                 state = State.DEAD_L;
             }
             switch (state) {
                 case IDLE_L:
-                    body.setLinearVelocity(new Vec2(0,0));
+                    isLand =true;
+                    //body.setLinearVelocity(new Vec2(0,0));
                     if (!(spriteIndex >= 0 && spriteIndex <= 9)) {
                         spriteIndex = 0;
+                    }else  if(spriteIndex==0){
+                        body.setLinearVelocity(new Vec2(0,0));
+                    }else  if(spriteIndex>0){
+                        body.applyLinearImpulse(new Vec2(0,200),body.getPosition());
                     }
                     break;
                 case IDLE_R:
-                    body.setLinearVelocity(new Vec2(0,0));
+                    isLand =true;
+                    //body.setLinearVelocity(new Vec2(0,0));
                     if (!(spriteIndex >= 10 && spriteIndex <= 19)) {
                         spriteIndex = 10;
+                    }else  if(spriteIndex==10){
+                        body.setLinearVelocity(new Vec2(0,0));
+                    }else  if(spriteIndex>10){
+                        body.applyLinearImpulse(new Vec2(0,200),body.getPosition());
                     }
                     break;
                 case JMP_L:
                     if (!(spriteIndex >= 20 && spriteIndex <= 28)) {
                         spriteIndex = 20;
+                    }else if(spriteIndex<=22){
+                        isLand =false;
+                        body.applyLinearImpulse(new Vec2(-100,-400),body.getPosition());
+                    }else if(spriteIndex<=24){
+                        body.applyLinearImpulse(new Vec2(-300,-100),body.getPosition());
+                    }else if(spriteIndex >=26){
+                        body.applyLinearImpulse(new Vec2(-300,500),body.getPosition());
+                    }
+
+                    if(spriteIndex==28){
+                        state = State.IDLE_L;
                     }
                     break;
                 case JMP_R:
                     if (!(spriteIndex >= 29 && spriteIndex <= 37)) {
                         spriteIndex = 29;
+                    }else if(spriteIndex<=31){
+                        isLand =false;
+                        body.applyLinearImpulse(new Vec2(100,-400),body.getPosition());
+                    }else if(spriteIndex<=33){
+                        body.applyLinearImpulse(new Vec2(300,-100),body.getPosition());
+                    }else if(spriteIndex >=35){
+                        body.applyLinearImpulse(new Vec2(300,500),body.getPosition());
+                    }
+
+                    if(spriteIndex==37){
+                        state = State.IDLE_R;
                     }
                     break;
                 case RUN_L:
@@ -337,7 +378,7 @@ public class E7 extends Enemy{
                                         action("RUN_R");
                                     }
                                     break;
-                                case 4:
+                                case 3:
                                     action("RUN_L");
                                     //this.state = State.RUN_L;
                                     break;
@@ -358,7 +399,7 @@ public class E7 extends Enemy{
                                         action("RUN_L");
                                     }
                                     break;
-                                case 4:
+                                case 3:
                                     action("RUN_R");
                                     //this.state = State.RUN_R;
                                     break;
@@ -366,7 +407,7 @@ public class E7 extends Enemy{
                         } else if (this.getBody().getPosition().x - Player.body.getPosition().x <= 4 &&
                                 this.getBody().getPosition().x - Player.body.getPosition().x >= 0) {
                             //state = State.IDLE_L;
-                            switch (rand.nextInt(8)) {
+                            switch (rand.nextInt(10)) {
                                 case 0:
                                     action("ATK1_L");
                                     //this.state = State.ATK1_L;
@@ -400,11 +441,15 @@ public class E7 extends Enemy{
                                     action("ATK3_L");
                                     //this.state = State.ATK3_L;
                                     break;
+                                default:
+                                    action("JMP_L");
+                                    //this.state = State.ATK3_L;
+                                    break;
                             }
                         } else if (Player.body.getPosition().x - this.getBody().getPosition().x <= 4 &&
                                 Player.body.getPosition().x - this.getBody().getPosition().x >= 0) {
                             //state = State.IDLE_R;
-                            switch (rand.nextInt(8)) {
+                            switch (rand.nextInt(10)) {
                                 case 0:
                                     action("ATK1_R");
                                     //this.state = State.ATK1_R;
@@ -437,6 +482,10 @@ public class E7 extends Enemy{
                                 case 7:
                                     action("ATK3_R");
                                     //this.state = State.ATK3_R;
+                                    break;
+                                default:
+                                    action("JMP_R");
+                                    //this.state = State.ATK3_L;
                                     break;
                             }
                         }
