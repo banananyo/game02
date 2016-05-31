@@ -18,6 +18,7 @@ import sut.game02.core.sprite.SpriteLoader;
 import tripleplay.game.Screen;
 import tripleplay.util.Randoms;
 //import tripleplay.game.ScreenStack;
+import sut.game02.core.GameScreen;
 
 import java.util.Random;
 
@@ -28,6 +29,8 @@ import static playn.core.PlayN.graphics;
 public class E7 extends Enemy{
     Random rand = new Random();
     boolean isLand = true;
+    Layer bossHpLayer;
+    ToolsG toolsG;
 
     public Layer layer(){
         return this.sprite.layer();
@@ -40,9 +43,10 @@ public class E7 extends Enemy{
         Body body = world.createBody(bodyDef);
 
         Vec2[] vertices = {
-                new Vec2(  0, +  3),
-                new Vec2(+ 1, + -1),
-                new Vec2(- 1, + -1)
+                new Vec2(  0, +  2),
+                new Vec2(+ 1, +  0),
+                new Vec2(  0, +  -2),
+                new Vec2(- 1, +  0)
         };
         PolygonShape shape = new PolygonShape();
         shape.set(vertices,vertices.length);
@@ -51,14 +55,14 @@ public class E7 extends Enemy{
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
         fixtureDef.density = 2;
-        fixtureDef.friction = 0.5f;
+        fixtureDef.friction = 0.8f;
         //fixtureDef.restitution = 0.2f;
 
         body.createFixture(fixtureDef);
         //body.setLinearDamping(0f);
         body.setTransform(new Vec2(x,y),0f);
         body.setFixedRotation(true);
-        layer().setOrigin(sprite.width()/2, sprite.height()/2+14);
+        layer().setOrigin(sprite.width()/2, sprite.height()/2+42);
         return  body;
     }
     public  void action(String action){
@@ -163,11 +167,12 @@ public class E7 extends Enemy{
                         spriteIndex = 20;
                     }else if(spriteIndex<=22){
                         isLand =false;
-                        body.applyLinearImpulse(new Vec2(-100,-400),body.getPosition());
+                        body.applyLinearImpulse(new Vec2(0,-50),body.getPosition());
                     }else if(spriteIndex<=24){
-                        body.applyLinearImpulse(new Vec2(-300,-100),body.getPosition());
+                        body.applyLinearImpulse(new Vec2(-100,-60),body.getPosition());
                     }else if(spriteIndex >=26){
-                        body.applyLinearImpulse(new Vec2(-300,500),body.getPosition());
+                        body.setLinearVelocity(new Vec2(0,0));
+                        body.applyLinearImpulse(new Vec2(-100,500),body.getPosition());
                     }
 
                     if(spriteIndex==28){
@@ -179,11 +184,12 @@ public class E7 extends Enemy{
                         spriteIndex = 29;
                     }else if(spriteIndex<=31){
                         isLand =false;
-                        body.applyLinearImpulse(new Vec2(100,-400),body.getPosition());
+                        body.applyLinearImpulse(new Vec2(0,-50),body.getPosition());
                     }else if(spriteIndex<=33){
-                        body.applyLinearImpulse(new Vec2(300,-100),body.getPosition());
+                        body.applyLinearImpulse(new Vec2(100,-60),body.getPosition());
                     }else if(spriteIndex >=35){
-                        body.applyLinearImpulse(new Vec2(300,500),body.getPosition());
+                        body.setLinearVelocity(new Vec2(0,0));
+                        body.applyLinearImpulse(new Vec2(100,500),body.getPosition());
                     }
 
                     if(spriteIndex==37){
@@ -234,7 +240,7 @@ public class E7 extends Enemy{
                         spriteIndex = 66;
                     }
                     if(spriteIndex==68){
-                        Status.enemyAttack(this,"L",5,10);
+                        Status.enemyAttack(this,"L",5,12);
                     }else if(spriteIndex==73){
                         state = State.IDLE_L;
                     }
@@ -244,7 +250,7 @@ public class E7 extends Enemy{
                         spriteIndex = 74;
                     }
                     if(spriteIndex==76){
-                        Status.enemyAttack(this,"R",5,10);
+                        Status.enemyAttack(this,"R",5,12);
                     }else if(spriteIndex==81){
                         state = State.IDLE_R;
                     }

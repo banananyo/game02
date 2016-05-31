@@ -66,7 +66,7 @@ public class E6 extends Enemy{
                     if (!(spriteIndex >= 0 && spriteIndex <= 2)) {
                         spriteIndex = 0;
                     }else if(spriteIndex==2){
-                        Status.playerHit(11);
+                        Status.playerHit(11f);
                         state = State.IDLE_L;
                     }
                     break;
@@ -74,7 +74,7 @@ public class E6 extends Enemy{
                     if (!(spriteIndex >= 3 && spriteIndex <= 5)) {
                         spriteIndex = 3;
                     }else if(spriteIndex==5){
-                        Status.playerHit(11);
+                        Status.playerHit(11f);
                         state = State.IDLE_R;
                     }
                     break;

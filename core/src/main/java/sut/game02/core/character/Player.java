@@ -166,23 +166,15 @@ public class Player extends UIScreen {
                         state == State.Run_R ||
                         state == State.BR_R ||
                         state == State.ATK1_R) {
-                    state = State.AB_R;
+                    state = State.BRK_R;
                     //body.applyForceToCenter(new Vec2(-500f, -400f));
                 } else if (state == State.IDLE_L ||
                         state == State.Run_L ||
                         state == State.BR_L ||
                         state == State.ATK1_L) {
-                        state = State.AB_L;
+                        state = State.BRK_L;
                     //body.applyForceToCenter(new Vec2(500f, -400f));
-                } else if (state == State.JM_L ||
-                        state == State.JUMP_L) {
-                    state = State.AB_L;
-                    body.applyForceToCenter(new Vec2(600f, -600f));
-                } else if (state == State.JM_R ||
-                        state == State.JUMP_R) {
-                    state = State.AB_R;
-                    body.applyForceToCenter(new Vec2(-600f, -600f));
-                }
+                } 
                 break;
             case 8:
                 if (state == State.IDLE_R || state == State.Run_R) {
@@ -230,6 +222,34 @@ public class Player extends UIScreen {
                     state=State.IDLE_R;
                 }
                 break;
+            case 14:
+                if (state == State.JM_L ||
+                        state == State.JUMP_L) {
+                    state = State.AB_L;
+                    body.applyForceToCenter(new Vec2(600f, -600f));
+                } else if (state == State.JM_R ||
+                        state == State.JUMP_R) {
+                    state = State.AB_R;
+                    body.applyForceToCenter(new Vec2(-600f, -600f));
+                } else if(state == State.IDLE_R ||
+                        state == State.Run_R ||
+                        state == State.BR_R ||
+                        state == State.ATK1_R ||
+                        state == State.ATK2_R ||
+                        state == State.ATK3_R ||
+                        state == State.ATK4_R){
+                        state = State.AB_R;
+                } else if(state == State.IDLE_L ||
+                        state == State.Run_L ||
+                        state == State.BR_L ||
+                        state == State.ATK1_L ||
+                        state == State.ATK2_L ||
+                        state == State.ATK3_L ||
+                        state == State.ATK4_L){
+                        state = State.AB_L;
+                }
+
+                break;
         }
     }
     public Player(final World world, final float x, final float y){
@@ -239,7 +259,7 @@ public class Player extends UIScreen {
             @Override
             public void onSuccess(Sprite result){
                 sprite.setSprite(spriteIndex);
-                layer().setOrigin(sprite.width()/2f, sprite.height()/2f+34);
+                layer().setOrigin(sprite.width()/2f, sprite.height()/2f+38);
                 layer().setTranslation(x, y);
                 body = initPhysicsBody(world,
                         GameScreen.M_PER_PIXEL*x,
@@ -261,7 +281,7 @@ public class Player extends UIScreen {
         if(hasLoaded == false) return;
         e += delta;
         //body.applyForce(new Vec2(0,2f),body.getPosition());
-        if(e > 90) {
+        if(e > 50) {
             switch (state){
                 case IDLE_L:
                     Status.isLand =true;
@@ -419,7 +439,7 @@ public class Player extends UIScreen {
                         spriteIndex = 106;
                     }
                     if(spriteIndex==111){
-                        Status.playerAttack(body,"L",5);
+                        Status.playerAttack(body,"L",5f,5f);
                         //GameScreen.sword.play();
                         //con.applyLinearImpulse(new Vec2(-100f,-10f),body.getPosition());
                         //con.applyLinearImpulse(new Vec2(-100f,-10f),con.getPosition());
@@ -436,7 +456,7 @@ public class Player extends UIScreen {
                     }
 
                     if(spriteIndex==121){
-                        Status.playerAttack(body,"R",5);
+                        Status.playerAttack(body,"R",5f,5f);
                         //GameScreen.sword.play();
                         //con.applyLinearImpulse(new Vec2(100f,-10f),body.getPosition());
                         //con.applyLinearImpulse(new Vec2(100f,-10f),con.getPosition());
@@ -454,7 +474,7 @@ public class Player extends UIScreen {
                         body.applyLinearImpulse(new Vec2(-300,0),body.getPosition());
                     }else if(spriteIndex==132){
                         body.setLinearVelocity(new Vec2(0,0));
-                        Status.playerAttack(body,"L",5);
+                        Status.playerAttack(body,"L",5f,10f);
                         //GameScreen.sword.play();
                         Status.isContact = false;
                     }
@@ -470,7 +490,7 @@ public class Player extends UIScreen {
                         body.applyLinearImpulse(new Vec2(300,0),body.getPosition());
                     }else if(spriteIndex==143){
                         body.setLinearVelocity(new Vec2(0,0));
-                        Status.playerAttack(body,"R",5);
+                        Status.playerAttack(body,"R",5f,10f);
                         //GameScreen.sword.play();
                         Status.isContact = false;
                     }
@@ -487,7 +507,7 @@ public class Player extends UIScreen {
                     if(spriteIndex==150){
                         body.applyLinearImpulse(new Vec2(-350,0),body.getPosition());
                     }else if(spriteIndex==156){
-                        Status.playerAttack(body,"L",5);
+                        Status.playerAttack(body,"L",5f,15f);
                         //GameScreen.sword.play();
                         Status.isContact = false;
                     }
@@ -504,7 +524,7 @@ public class Player extends UIScreen {
                     if(spriteIndex==163){
                         body.applyLinearImpulse(new Vec2(350,0),body.getPosition());
                     }else if(spriteIndex==169){
-                        Status.playerAttack(body,"R",5);
+                        Status.playerAttack(body,"R",5f,15f);
                         //GameScreen.sword.play();
                         Status.isContact = false;
                     }
@@ -522,12 +542,11 @@ public class Player extends UIScreen {
                     if(spriteIndex==180){
                         spriteIndex=177;
                     }
-                    /*if(spriteIndex==179){
-                        Status.playerAttack(body,"C",5.5f);
-                        GameScreen.sword.play();
-                        Status.isContact = false;
-                    }
-                    if(spriteIndex == 181){
+                    /*else if(spriteIndex==176){
+                        Status.playerAttack(body,"C",5.5f,5f);
+                        //Status.isContact = false;
+                    }*/
+                    /*if(spriteIndex == 181){
                         state = State.IDLE_L;
                     }*/
                     break;
@@ -538,13 +557,12 @@ public class Player extends UIScreen {
                     if(spriteIndex==188){
                         spriteIndex=185;
                     }
-                    /*if(spriteIndex==187){
-                        Status.playerAttack(body,"C",5.5f);
-                        GameScreen.sword.play();
-                        Status.isContact = false;
-                    }
+                    /*else if(spriteIndex==184){
+                        Status.playerAttack(body,"C",5.5f,5f);
+                        //Status.isContact = false;
+                    }*/
 
-                    if(spriteIndex == 189){
+                    /*if(spriteIndex == 189){
                         state = State.IDLE_R;
                     }*/
                     break;

@@ -49,7 +49,7 @@ public class E4 extends Enemy{
         f = body.createFixture(fixtureDef);
         body.setTransform(new Vec2(x,y),0f);
         body.setFixedRotation(true);
-        layer().setOrigin(sprite.width()/2, sprite.height()/2+24);
+        layer().setOrigin(sprite.width()/2, sprite.height()/2+20);
         return body;
     }
 
@@ -66,7 +66,7 @@ public class E4 extends Enemy{
                     if (!(spriteIndex >= 12 && spriteIndex <= 17)) {
                         spriteIndex = 12;
                     }else if(spriteIndex==17){
-                        Status.playerHit(11);
+                        Status.playerHit(11f);
                         state = State.IDLE_L;
                     }
                     break;
@@ -74,7 +74,7 @@ public class E4 extends Enemy{
                     if (!(spriteIndex >= 18 && spriteIndex <= 23)) {
                         spriteIndex = 18;
                     }else if(spriteIndex==23){
-                        Status.playerHit(11);
+                        Status.playerHit(11f);
                         state = State.IDLE_R;
                     }
                     break;

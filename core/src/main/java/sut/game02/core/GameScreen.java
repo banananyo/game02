@@ -40,9 +40,9 @@ import java.util.concurrent.ExecutionException;
 
 
 public class GameScreen extends Screen {
-    public static Sound sword;
-    public static Sound music;
-    public static boolean hasLoaded;
+    //public static Sound sword;
+    
+    public static boolean hasLoaded = false;
     public Clock.Source c = new Clock.Source(0);
     public static Body wallLeft;
     public static Body wallRight;
@@ -89,10 +89,10 @@ public class GameScreen extends Screen {
     public float alpha = 1;
 
   public GameScreen(final ScreenStack ss, final int stage){
-      sword = assets().getSound("sounds/skill");
-     /* music = assets().getSound("sounds/newthang");
-      music.setLooping(true);
-      music.setVolume(1);*/
+      //sword = assets().getSound("sounds/skill");
+      MyGame.bgMusic = assets().getSound("sounds/bgMusic/"+stage);
+      MyGame.bgMusic.setLooping(true);
+      MyGame.bgMusic.setVolume(80);
       this.ss = ChooseScreen.ss;
       this.stage = stage;
       hpLoadImage = assets().getImage("images/hp/hp2.png");
@@ -195,32 +195,32 @@ public class GameScreen extends Screen {
 
       if(stage == 1){
           System.out.println("if stage=1");
-          Status.createEnemy(world,500f,300f,"e1",1);
-          Status.createEnemy(world,700f,300f,"e2",1);
+          Status.createEnemy(world,500f,300f,"e1",20);
+          Status.createEnemy(world,700f,300f,"e2",20);
       }else if(stage == 2){
           System.out.println("else if stage=2");
-          Status.createEnemy(world,500f,300f,"e1",3);
-          Status.createEnemy(world,700f,300f,"e2",5);
+          Status.createEnemy(world,500f,300f,"e1",30);
+          Status.createEnemy(world,700f,300f,"e2",50);
       }else if(stage == 3){
           System.out.println("else if stage=3");
-          Status.createEnemy(world,500f,300f,"e3",8);
-          Status.createEnemy(world,700f,300f,"e4",8);
+          Status.createEnemy(world,500f,300f,"e3",80);
+          Status.createEnemy(world,700f,300f,"e4",80);
       }else if(stage == 4){
           System.out.println("else if stage=4");
-          Status.createEnemy(world,500f,300f,"e5",9);
-          Status.createEnemy(world,700f,300f,"e6",9);
+          Status.createEnemy(world,500f,300f,"e5",90);
+          Status.createEnemy(world,700f,300f,"e6",90);
       }else if(stage == 5){
           System.out.println("else if stage=5");
-          Status.createEnemy(world,500f,300f,"e5",10);
-          Status.createEnemy(world,700f,300f,"e6",7);
-          Status.createEnemy(world,600f,300f,"e4",7);
+          Status.createEnemy(world,500f,300f,"e5",100);
+          Status.createEnemy(world,700f,300f,"e6",70);
+          Status.createEnemy(world,600f,300f,"e4",70);
       }else if(stage == 6){
           System.out.println("else if stage=6");
-          Status.createEnemy(world,500f,300f,"e1",3);
-          Status.createEnemy(world,700f,300f,"e2",5);
+          Status.createEnemy(world,500f,300f,"e1",30);
+          Status.createEnemy(world,700f,300f,"e2",150);
       }else if(stage == 7){
           System.out.println("else if stage=7");
-          Status.createEnemy(world,700f,300f,"e7",10);
+          Status.createEnemy(world,700f,300f,"e7",300);
       }
       //----------------------------------------------------------------------
   }
@@ -228,13 +228,14 @@ public class GameScreen extends Screen {
     @Override
   public void wasShown (){
     super.wasShown();
-        //music.play();
+        MyGame.bgMusic.play();
         hasLoaded = false;
         //----------------------------------------------------------------------
         //sho.layer().setScale(0.6f);
         layer.add(player.layer());
         try{
             //Status.hp =100;
+            
             Status.isDead = false;
             Player.state = Player.State.IDLE_R;
             for(Enemy e : Status.eList)
