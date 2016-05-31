@@ -293,6 +293,16 @@ public class Status extends Screen {
             screenLayer.remove(imageLayer);
             screenLayer.remove(player.layer());
             MyGame.ss.push(new GameScreen(MyGame.ss, ++stage));
+        }else{
+            MyGame.bgMusic.stop();
+            Status.isMsg = false;
+            for(int i=0 ; i<20 ; i++){
+                //ss.remove(ss.top());
+                Status.hp = 100f;
+                if(MyGame.ss.size() >1){
+                    MyGame.ss.remove(MyGame.ss.top());
+                }
+            }
         }
     }
 
@@ -335,6 +345,7 @@ public class Status extends Screen {
             Status.createEnemy(world,500f,300f,"e1",30);
             Status.createEnemy(world,700f,300f,"e2",150);
         }else if(stage == 7){
+            enemyTalk=false;
             l = toolsG.genText("Stage Key: W25G",15,Colors.WHITE,600,10);
             System.out.println("else if stage=7");
             Status.createEnemy(world,700f,300f,"e7",300);

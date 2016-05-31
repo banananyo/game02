@@ -114,7 +114,7 @@ public class GameScreen extends Screen {
               for(int i=0 ; i<20 ; i++){
                   //ss.remove(ss.top());
                   Status.hp = 100f;
-                  if(ss.size() >1){
+                  if(MyGame.ss.size() >1){
                       MyGame.ss.remove(MyGame.ss.top());
                   }
               }
@@ -271,10 +271,10 @@ public class GameScreen extends Screen {
                 alpha = ToolsG.fadeIO(alpha);
                 Status.msg.setAlpha(alpha);
             }else if(Status.eList.isEmpty() && !Status.isMsg &&stage==7){
-                System.out.println("Win");
+                System.out.println("Over");
                 //this.ss.remove(ss.top());
                 Status.isMsg = true;
-                Status.msg= Status.genMsgLayer("win");
+                Status.msg= Status.genMsgLayer("over");
                 alpha = ToolsG.fadeIn(alpha);
                 Status.msg.setAlpha(alpha);
             }
