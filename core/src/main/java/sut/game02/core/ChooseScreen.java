@@ -51,7 +51,7 @@ public class ChooseScreen extends UIScreen {
         n.addListener(new Mouse.LayerAdapter() {
             @Override
             public void onMouseUp(Mouse.ButtonEvent event) {
-                MyGame.ss.push(new GameScreen( MyGame.ss,1));
+                MyGame.ss.push(new GameScreen( MyGame.ss,0));
             }
         });
         sub.addListener(new Mouse.LayerAdapter() {

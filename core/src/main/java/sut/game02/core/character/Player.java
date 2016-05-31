@@ -50,7 +50,7 @@ public class Player extends UIScreen {
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
         fixtureDef.density = 7;
-        fixtureDef.friction = 1;
+        fixtureDef.friction = 0.4f;
         //fixtureDef.restitution = 0.2f;
 
         body.createFixture(fixtureDef);
@@ -205,9 +205,9 @@ public class Player extends UIScreen {
                 }
                 break;
             case 12:
-                if (state == State.IDLE_L  || state == State.BR_L) {
+                if (state == State.IDLE_L) {
                     state = State.ATK4_L;
-                } else if (state == State.IDLE_R  || state == State.BR_R) {
+                } else if (state == State.IDLE_R) {
                     state = State.ATK4_R;
                 } else if (state == State.ATK4_L) {
                     state = State.C_L;
@@ -316,16 +316,16 @@ public class Player extends UIScreen {
                 case Run_L:
                     if (!(spriteIndex >= 39 && spriteIndex <= 45)) {
                         spriteIndex = 39;
-                    }else if(spriteIndex%2==0){
-                        body.applyLinearImpulse(new Vec2(-150,0),body.getPosition());
+                    }else if(spriteIndex>=39){
+                        body.applyLinearImpulse(new Vec2(-100,0),body.getPosition());
                     }
                     break;
 
                 case Run_R:
                     if (!(spriteIndex >= 50 && spriteIndex <= 56)) {
                         spriteIndex = 50;
-                    }else if(spriteIndex%2==1){
-                        body.applyLinearImpulse(new Vec2(150,0),body.getPosition());
+                    }else if(spriteIndex>=50){
+                        body.applyLinearImpulse(new Vec2(100,0),body.getPosition());
                     }
                     break;
 

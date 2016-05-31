@@ -65,9 +65,6 @@ public class ToolsG extends UIScreen {
             return 0;
         }
     }
-    public static int genTime(int time){
-        if(time>0){return time--;}
-        else {return 0;}
-    }
+
 
 }

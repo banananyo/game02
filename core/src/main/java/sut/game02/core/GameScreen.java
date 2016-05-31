@@ -109,7 +109,7 @@ public class GameScreen extends Screen {
       bb.addListener(new Mouse.LayerAdapter() {
           @Override
           public void onMouseUp(Mouse.ButtonEvent event) {
-              //status.pause();
+              MyGame.bgMusic.stop();
               Status.isMsg = false;
               for(int i=0 ; i<20 ; i++){
                   //ss.remove(ss.top());
@@ -192,36 +192,8 @@ public class GameScreen extends Screen {
       control = new PageControl(player);
       status = new Status(ss,layer,player);
       //A = new Enemy(world,0,0,"A",1);
+      Status.genMonster(stage,world);
 
-      if(stage == 1){
-          System.out.println("if stage=1");
-          Status.createEnemy(world,500f,300f,"e1",20);
-          Status.createEnemy(world,700f,300f,"e2",20);
-      }else if(stage == 2){
-          System.out.println("else if stage=2");
-          Status.createEnemy(world,500f,300f,"e1",30);
-          Status.createEnemy(world,700f,300f,"e2",50);
-      }else if(stage == 3){
-          System.out.println("else if stage=3");
-          Status.createEnemy(world,500f,300f,"e3",80);
-          Status.createEnemy(world,700f,300f,"e4",80);
-      }else if(stage == 4){
-          System.out.println("else if stage=4");
-          Status.createEnemy(world,500f,300f,"e5",90);
-          Status.createEnemy(world,700f,300f,"e6",90);
-      }else if(stage == 5){
-          System.out.println("else if stage=5");
-          Status.createEnemy(world,500f,300f,"e5",100);
-          Status.createEnemy(world,700f,300f,"e6",70);
-          Status.createEnemy(world,600f,300f,"e4",70);
-      }else if(stage == 6){
-          System.out.println("else if stage=6");
-          Status.createEnemy(world,500f,300f,"e1",30);
-          Status.createEnemy(world,700f,300f,"e2",150);
-      }else if(stage == 7){
-          System.out.println("else if stage=7");
-          Status.createEnemy(world,700f,300f,"e7",300);
-      }
       //----------------------------------------------------------------------
   }
 

@@ -27,6 +27,7 @@ import static playn.core.PlayN.graphics;
 
 
 public class E7 extends Enemy{
+
     Random rand = new Random();
     boolean isLand = true;
     Layer bossHpLayer;
@@ -365,9 +366,20 @@ public class E7 extends Enemy{
             sprite.setSprite(spriteIndex);
             if (!isDead) {
                 spriteIndex++;
+
+                if(Player.body.getPosition().x>6 && Status.enemyTalk){
+                    this.state=State.RUN_R;
+                }
+                if(this.body.getPosition().x>24 && Status.enemyTalk){
+                    hp=0;
+                    isDead=true;
+                    sprite.layer().setVisible(false);
+                    Status.nextStage(0);
+                }
+
                 try {
                     //System.out.println("cd = "+cd);
-                    if (rand.nextInt(5) == 3) {
+                    if (rand.nextInt(5) == 3 && !Status.enemyTalk) {
                         //cd =0;
                         if (this.getBody().getPosition().x - Player.body.getPosition().x > 4) {
                             switch (rand.nextInt(4)) {
@@ -496,6 +508,7 @@ public class E7 extends Enemy{
                             }
                         }
                     }
+
                 } catch (Exception ex) {
 
                 }

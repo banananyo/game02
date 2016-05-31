@@ -27,6 +27,7 @@ import static playn.core.PlayN.graphics;
 
 public class Status extends Screen {
     //static  int cd;
+    public static boolean enemyTalk=false;
     public static boolean isOver = false;
     public static boolean isMsg = false;
     public static boolean isPaused = false;
@@ -92,14 +93,10 @@ public class Status extends Screen {
                         a==player.getBody() && b==GameScreen.wallRight) &&
                     eList.isEmpty()){
                     isMsg = false;
+                    MyGame.bgMusic.stop();
                     nextStage(GameScreen.stage);
                     playerHit(0);
-                }/*else if((b==player.getBody() && a==GameScreen.wallLeft ||
-                        a==player.getBody() && b==GameScreen.wallLeft) &&
-                    eList.isEmpty()){
-                    isMsg = false;
-                    backStage();
-                }*/
+                }
             }
 
             @Override
@@ -303,6 +300,53 @@ public class Status extends Screen {
         System.out.println("back Stage");
         //this.ss.push(new GameScreen(this.ss, stage+1));
         MyGame.ss.remove(MyGame.ss.top());
+    }
+    public static void genMonster(int stage,World world){
+        Layer l = toolsG.genText("Stage Key:",15,Colors.WHITE,600,10);
+        if(stage == 1){
+            l = toolsG.genText("Stage Key: 461K",15,Colors.WHITE,600,10);
+            System.out.println("if stage=1");
+            Status.createEnemy(world,500f,300f,"e1",20);
+            Status.createEnemy(world,700f,300f,"e2",20);
+        }else if(stage == 2){
+            l = toolsG.genText("Stage Key: Y7UD",15,Colors.WHITE,600,10);
+            System.out.println("else if stage=2");
+            Status.createEnemy(world,500f,300f,"e1",30);
+            Status.createEnemy(world,700f,300f,"e2",50);
+        }else if(stage == 3){
+            l = toolsG.genText("Stage Key: NAPQ",15,Colors.WHITE,600,10);
+            System.out.println("else if stage=3");
+            Status.createEnemy(world,500f,300f,"e3",80);
+            Status.createEnemy(world,700f,300f,"e4",80);
+        }else if(stage == 4){
+            l = toolsG.genText("Stage Key: 9B3Z",15,Colors.WHITE,600,10);
+            System.out.println("else if stage=4");
+            Status.createEnemy(world,500f,300f,"e5",90);
+            Status.createEnemy(world,700f,300f,"e6",90);
+        }else if(stage == 5){
+            l = toolsG.genText("Stage Key: 8765",15,Colors.WHITE,600,10);
+            System.out.println("else if stage=5");
+            Status.createEnemy(world,500f,300f,"e5",100);
+            Status.createEnemy(world,700f,300f,"e6",70);
+            Status.createEnemy(world,600f,300f,"e4",70);
+        }else if(stage == 6){
+            l = toolsG.genText("Stage Key: FGHJ",15,Colors.WHITE,600,10);
+            System.out.println("else if stage=6");
+            Status.createEnemy(world,500f,300f,"e1",30);
+            Status.createEnemy(world,700f,300f,"e2",150);
+        }else if(stage == 7){
+            l = toolsG.genText("Stage Key: W25G",15,Colors.WHITE,600,10);
+            System.out.println("else if stage=7");
+            Status.createEnemy(world,700f,300f,"e7",300);
+        }
+        else if(stage == 0){
+            enemyTalk=true;
+            l = toolsG.genText("You killed my father...!!!",18,Colors.WHITE,20,200);
+            System.out.println("else if stage=0");
+            Status.createEnemy(world,500f,300f,"e7",300);
+        }
+
+        screenLayer.add(l);
     }
 
 }
