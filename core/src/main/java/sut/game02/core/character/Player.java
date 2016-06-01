@@ -205,14 +205,14 @@ public class Player extends UIScreen {
                 }
                 break;
             case 12:
-                if (state == State.IDLE_L) {
+                if (state == State.IDLE_L && Status.mana>1f) {
                     state = State.ATK4_L;
-                } else if (state == State.IDLE_R) {
+                } else if (state == State.IDLE_R && Status.mana>1f) {
                     state = State.ATK4_R;
                 } else if (state == State.ATK4_L) {
-                    state = State.C_L;
+                    state = State.IDLE_L;
                 } else if (state == State.ATK4_R) {
-                    state = State.C_R;
+                    state = State.IDLE_R;
                 }
                 break;
             case 13:
@@ -536,46 +536,48 @@ public class Player extends UIScreen {
                     break;
 
                 case ATK4_L:
-                    if (!(spriteIndex >= 174 && spriteIndex <= 181)) {
-                        spriteIndex = 174;
-                    }
-                    if(spriteIndex==180){
-                        spriteIndex=177;
-                    }
-                    /*else if(spriteIndex==176){
-                        Status.playerAttack(body,"C",5.5f,5f);
-                        //Status.isContact = false;
-                    }*/
-                    /*if(spriteIndex == 181){
-                        state = State.IDLE_L;
-                    }*/
+                        if (!(spriteIndex >= 174 && spriteIndex <= 181)) {
+                            spriteIndex = 174;
+                        }
+                        if (spriteIndex == 176) {
+                            Status.mana -= 1.0f;
+                            Status.playerAttack(body, "L", 12f, 5f);
+                            Status.playerAttack(body, "R", 12f, 5f);
+                        } else if (spriteIndex == 178) {
+                            Status.mana -= 0.5f;
+                            Status.playerAttack(body, "L", 12f, 5f);
+                            Status.playerAttack(body, "R", 12f, 5f);
+                        } else if (spriteIndex == 180 && Status.mana>0f) {
+                            spriteIndex = 177;
+                        }else if(Status.mana==0){state=State.IDLE_L;}
                     break;
                 case ATK4_R:
-                    if (!(spriteIndex >= 182 && spriteIndex <= 189)) {
-                        spriteIndex = 182;
-                    }
-                    if(spriteIndex==188){
-                        spriteIndex=185;
-                    }
-                    /*else if(spriteIndex==184){
-                        Status.playerAttack(body,"C",5.5f,5f);
-                        //Status.isContact = false;
-                    }*/
-
-                    /*if(spriteIndex == 189){
-                        state = State.IDLE_R;
-                    }*/
+                        if (!(spriteIndex >= 182 && spriteIndex <= 189)) {
+                            spriteIndex = 182;
+                        }
+                        if (spriteIndex == 184) {
+                            Status.mana -= 1.0f;
+                            Status.playerAttack(body, "L", 12f, 5f);
+                            Status.playerAttack(body, "R", 12f, 5f);
+                        } else if (spriteIndex == 186) {
+                            Status.mana -= 0.5f;
+                            Status.playerAttack(body, "L", 12f, 5f);
+                            Status.playerAttack(body, "R", 12f, 5f);
+                        } else if (spriteIndex == 188 && Status.mana>0f) {
+                            spriteIndex = 185;
+                        }else if(Status.mana==0){state=State.IDLE_R;}
                     break;
                 case C_L:
                     if (!(spriteIndex >= 177 && spriteIndex <= 181)) {
                         spriteIndex = 177;
                     }
-                    if(spriteIndex==179){
-                        //Status.playerAttack(body,"C",5.5f);
+                    /*if(spriteIndex==179){
+                        Status.playerAttack(body,"L",5.5f,15f);
                         //GameScreen.sword.play();
                         Status.isContact = false;
-                    }
+                    }*/
                     if(spriteIndex == 181){
+                        Status.mana-=0.2f;
                         state = State.IDLE_L;
                     }
                     break;
@@ -584,11 +586,12 @@ public class Player extends UIScreen {
                         spriteIndex = 185;
                     }
 
-                    if(spriteIndex==187){
-                        //Status.playerAttack(body,"C",5.5f);
+                    /*if(spriteIndex==187){
+                        Status.mana-=0.2f;
+                        Status.playerAttack(body,"R",5.5f,15f);
                         //GameScreen.sword.play();
                         Status.isContact = false;
-                    }
+                    }*/
                     if(spriteIndex == 189){
                         state = State.IDLE_R;
                     }
@@ -600,7 +603,7 @@ public class Player extends UIScreen {
                     }
                     if(spriteIndex==89){
                         Status.isLand = false;
-                        body.applyLinearImpulse(new Vec2(-80,-300),body.getPosition());
+                        body.applyLinearImpulse(new Vec2(-100,-300),body.getPosition());
                     }
                     else if(spriteIndex > 91 && ! Status.isLand){
                         spriteIndex=90;
@@ -615,7 +618,7 @@ public class Player extends UIScreen {
                     }
                     if(spriteIndex==99){
                         Status.isLand = false;
-                        body.applyLinearImpulse(new Vec2(80,-300),body.getPosition());
+                        body.applyLinearImpulse(new Vec2(100,-300),body.getPosition());
                     }
                     else if(spriteIndex > 101 && ! Status.isLand){
                         spriteIndex=100;

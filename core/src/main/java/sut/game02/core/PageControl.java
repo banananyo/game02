@@ -49,7 +49,12 @@ public class PageControl extends Screen {
                         Status.hp += 5f;
                     } else if (event.key() == Key.W) {
                         Status.hp -= 5f;
+                    } else if (event.key() == Key.F) {
+                        Status.mana += 1f;
+                    } else if (event.key() == Key.G) {
+                        Status.mana -= 1f;
                     }
+
                 }
 
                 public void onKeyUp(Keyboard.Event event) {

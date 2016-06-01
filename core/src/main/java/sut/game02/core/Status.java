@@ -37,7 +37,8 @@ public class Status extends Screen {
     public static String gameControl = "play";
     public static String hpString ="100/100";
     public static float hp=100f;
-    public static Boolean showDebugDraw = true;
+    public static float mana=0f;
+    public static Boolean showDebugDraw = false;
     public static String gameMsg = "alive";
     public static ImageLayer msg;
 
@@ -48,8 +49,8 @@ public class Status extends Screen {
 
     private static Player player;
     private ScreenStack ss;
-    public static HashMap<Body,String> enemies = new HashMap<Body, String>();
-    public static List<Enemy> eList = new ArrayList<Enemy>();
+    public static HashMap<Body,String> enemies;
+    public static List<Enemy> eList;
 
     public static Image image;
     public static ImageLayer imageLayer;
@@ -59,8 +60,12 @@ public class Status extends Screen {
         this.ss = ss;
         this.screenLayer = screenLayer;
         this.player = player;
+
+        enemies = new HashMap<Body, String>();
+        eList = new ArrayList<Enemy>();
+
         toolsG = new ToolsG();
-        hpTextLayer = toolsG.genText("100/100",14, Colors.WHITE,25,20);
+        hpTextLayer = toolsG.genText("100/100",14, Colors.WHITE,20,20);
         screenLayer.add(hpTextLayer);
 
 
@@ -155,10 +160,10 @@ public class Status extends Screen {
             player.action(7);
             hp -= dmg;
         }
-
+        mana+=0.2f*dmg;
         hpString = Status.hp+"/100";
         screenLayer.remove(hpTextLayer);
-        hpTextLayer = toolsG.genText(hpString,14, Colors.WHITE,25,20);
+        hpTextLayer = toolsG.genText(hpString,14, Colors.WHITE,20,20);
         screenLayer.add(hpTextLayer);
     }
     public static void enemyHit(String lr,float dmg,Enemy e){
@@ -316,33 +321,33 @@ public class Status extends Screen {
         if(stage == 1){
             l = toolsG.genText("Stage Key: 461K",15,Colors.WHITE,600,10);
             System.out.println("if stage=1");
-            Status.createEnemy(world,500f,300f,"e1",20);
-            Status.createEnemy(world,700f,300f,"e2",20);
+            Status.createEnemy(world,500f,300f,"e1",50);
+            Status.createEnemy(world,700f,300f,"e2",50);
         }else if(stage == 2){
             l = toolsG.genText("Stage Key: Y7UD",15,Colors.WHITE,600,10);
             System.out.println("else if stage=2");
-            Status.createEnemy(world,500f,300f,"e1",30);
-            Status.createEnemy(world,700f,300f,"e2",50);
+            Status.createEnemy(world,500f,300f,"e1",60);
+            Status.createEnemy(world,700f,300f,"e2",60);
         }else if(stage == 3){
             l = toolsG.genText("Stage Key: NAPQ",15,Colors.WHITE,600,10);
             System.out.println("else if stage=3");
-            Status.createEnemy(world,500f,300f,"e3",80);
-            Status.createEnemy(world,700f,300f,"e4",80);
+            Status.createEnemy(world,500f,300f,"e3",70);
+            Status.createEnemy(world,700f,300f,"e4",70);
         }else if(stage == 4){
             l = toolsG.genText("Stage Key: 9B3Z",15,Colors.WHITE,600,10);
             System.out.println("else if stage=4");
-            Status.createEnemy(world,500f,300f,"e5",90);
-            Status.createEnemy(world,700f,300f,"e6",90);
+            Status.createEnemy(world,500f,300f,"e4",80);
+            Status.createEnemy(world,700f,300f,"e6",80);
         }else if(stage == 5){
             l = toolsG.genText("Stage Key: 8765",15,Colors.WHITE,600,10);
             System.out.println("else if stage=5");
-            Status.createEnemy(world,500f,300f,"e5",100);
+            Status.createEnemy(world,500f,300f,"e4",100);
             Status.createEnemy(world,700f,300f,"e6",70);
             Status.createEnemy(world,600f,300f,"e4",70);
         }else if(stage == 6){
             l = toolsG.genText("Stage Key: FGHJ",15,Colors.WHITE,600,10);
             System.out.println("else if stage=6");
-            Status.createEnemy(world,500f,300f,"e1",30);
+            Status.createEnemy(world,500f,300f,"e1",100);
             Status.createEnemy(world,700f,300f,"e2",150);
         }else if(stage == 7){
             enemyTalk=false;

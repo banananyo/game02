@@ -43,7 +43,7 @@ public class GameScreen extends Screen {
     //public static Sound sword;
     
     public static boolean hasLoaded = false;
-    public Clock.Source c = new Clock.Source(0);
+    public Clock.Source c;
     public static Body wallLeft;
     public static Body wallRight;
     public static Body ceil;
@@ -64,6 +64,11 @@ public class GameScreen extends Screen {
     private final ImageLayer hpLoad;
     private final Image hpBarImage;
     private final ImageLayer hpBar;
+
+    private final Image manaLoadImage;
+    private final ImageLayer manaLoad;
+    private final Image manaBarImage;
+    private final ImageLayer manaBar;
 
     public static float M_PER_PIXEL=1/26.666667f;
     public static float width=800*M_PER_PIXEL;
@@ -90,6 +95,7 @@ public class GameScreen extends Screen {
 
   public GameScreen(final ScreenStack ss, final int stage){
       //sword = assets().getSound("sounds/skill");
+      c = new Clock.Source(0);
       MyGame.bgMusic = assets().getSound("sounds/bgMusic/"+stage);
       MyGame.bgMusic.setLooping(true);
       MyGame.bgMusic.setVolume(80);
@@ -102,6 +108,14 @@ public class GameScreen extends Screen {
       hpBarImage = assets().getImage("images/hp/hp1.png");
       hpBar = graphics().createImageLayer(hpBarImage);
       hpBar.setTranslation(5, 5);
+      //----------------------------------------------------------------------
+      manaLoadImage = assets().getImage("images/hp/mana2.png");
+      manaLoad = graphics().createImageLayer(manaLoadImage);
+      manaLoad.setTranslation(14, 50);
+      //----------------------------------------------------------------------
+      manaBarImage = assets().getImage("images/hp/mana1.png");
+      manaBar = graphics().createImageLayer(manaBarImage);
+      manaBar.setTranslation(10, 50);
       //----------------------------------------------------------------------
       bbImage = assets().getImage("images/backbutt.png");
       this.bb = graphics().createImageLayer(bbImage);
@@ -145,6 +159,8 @@ public class GameScreen extends Screen {
       this.layer.add(bb);
       this.layer.add(hpLoad);
       this.layer.add(hpBar);
+      this.layer.add(manaLoad);
+      this.layer.add(manaBar);
       //----------------------------------------------------------------------
       final Vec2 gravity = new Vec2(0, 10);
       world=new World(gravity);
@@ -258,6 +274,11 @@ public class GameScreen extends Screen {
             }else if(Status.hp>100f){
                 Status.hp = 100f;
             }
+            if(Status.mana>10f){
+                Status.mana=10f;
+            }else if(Status.mana<=0f){
+                Status.mana=0f;
+            }
 
             if(Status.eList.isEmpty() && !Status.isMsg &&stage!=7){
                 System.out.println("show go");
@@ -307,6 +328,7 @@ public class GameScreen extends Screen {
             }
             //this.hpLoad.setTranslation((hp)-25,15);
             hpLoad.setWidth(Status.hp*2.5f);
+            manaLoad.setWidth(Status.mana*9.2f);
         }else if(Status.gameControl == "pause"){
             super.paint(c);
             this.player.paint(c);
